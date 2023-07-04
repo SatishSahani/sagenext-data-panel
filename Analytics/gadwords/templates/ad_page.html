@@ -21,10 +21,6 @@
                     <h4 class="panel-title">Adword Data</h4>
                     <div class="panel-heading-btn">
                         <a href="/dashboard/" class="btn btn-primary" style="margin-right:4px">Back to Dashboard</a>
-                        <!--<form id="deleteForm" name='delete' action="{% url 'delete' %}" method="post">
-                            {% csrf_token %}
-                            <button id="deleteButton" type="submit" class="btn btn-danger btn-sm">Delete</button>
-                        </form> -->
                         {% csrf_token %}
                         <button id="delete-button" class="btn btn-danger btn-sm" style="margin-right:4px" disabled>Delete Selected</button>
                         <button id="view-graph-button" class="btn btn-danger btn-sm" disabled>View Graph</button>
@@ -99,10 +95,78 @@
                             </thead>
                             <tbody>
                                 {% comment %} {% for row in ad_data %} {% endcomment %}
-                                {% for row in page_obj %}
-                                <tr>
+                                  {% if rows_per_page == 'All' %}
+                                  {% for row in page_obj %}
+                                  <tr>
                                     <td>
                                         <input type="checkbox" name="selected-rows" value="{{ row.id }}">
+                                    </td>
+                                    <td>{{forloop.counter }}</td>
+                                    <td>{{ row.date }}</td>
+                                    <td>{{ row.network }}</td>
+                                    <td>{{ row.network_clicks }}</td>
+                                    <td>{{ row.network_cost }}</td>
+                                    <td>{{ row.network_avg_cpc }}</td>
+                                    <td>{{ row.campaign_name }}</td>
+                                    <td>{{ row.campaign_adgroup_name }}</td>
+                                    <td>{{ row.campaign_cost }}</td>
+                                    <td>{{ row.campaign_cost_comparison }}</td>
+                                    <td>{{ row.campaign_clicks }}</td>
+                                    <td>{{ row.campaign_clicks_comparison }}</td>
+                                    <td>{{ row.campaign_interactions }}</td>
+                                    <td>{{ row.interaction_comparison }}</td>
+                                    <td>{{ row.campaign1_name }}</td>
+                                    <td>{{ row.campaign1_campaign_group_name }}</td>
+                                    <td>{{ row.campaign1_campaign_status }}</td>
+                                    <td>{{ row.campaign1_cost }}</td>
+                                    <td>{{ row.campaign1_conversions }}</td>
+                                    <td>{{ row.campaign1_cost_conv }}</td>
+                                    <td>{{ row.search }}</td>
+                                    <td>{{ row.search_cost }}</td>
+                                    <td>{{ row.search_clicks }}</td>
+                                    <td>{{ row.search_impressions }}</td>
+                                    <td>{{ row.search_conversion }}</td>
+                                    <td>{{ row.search_word }}</td>
+                                    <td>{{ row.search_word_clicks }}</td>
+                                    <td>{{ row.search_word_impressions }}</td>
+                                    <td>{{ row.search_word_conversions }}</td>
+                                    <td>{{ row.search_word_cost }}</td>
+                                    <td>{{ row.search_word_top_containing_queries }}</td>
+                                    <td>{{ row.search_keyword }}</td>
+                                    <td>{{ row.search_keyword_match_type }}</td>
+                                    <td>{{ row.search_keyword_criterion_status }}</td>
+                                    <td>{{ row.search_keyword_campaign_status }}</td>
+                                    <td>{{ row.search_keyword_ad_group_status }}</td>
+                                    <td>{{ row.search_keyword_cost }}</td>
+                                    <td>{{ row.search_keyword_clicks }}</td>
+                                    <td>{{ row.search_keyword_ctr }}</td>
+                                    <td>{{ row.demographics_gender }}</td>
+                                    <td>{{ row.demographics_age_range }}</td>
+                                    <td>{{ row.demographics_impression }}</td>
+                                    <td>{{ row.demographics_total_percent }}</td>
+                                    <td>{{ row.device }}</td>
+                                    <td>{{ row.device_cost }}</td>
+                                    <td>{{ row.device_clicks }}</td>
+                                    <td>{{ row.device_impressions }}</td>
+                                    <td>{{ row.clicks }}</td>
+                                    <td>{{ row.conversions }}</td>
+                                    <td>{{ row.cost_conv }}</td>
+                                    <td>{{ row.cost }}</td>
+                                    <td>{{ row.per_hour }}</td>
+                                    <td>{{ row.per_hour_impression }}</td>
+                                    <td>{{ row.per_day }}</td>
+                                    <td>{{ row.per_day_impression }}</td>
+                                    <td>{{ row.per_day_per_hour }}</td>
+                                    <td>{{ row.per_day_per_hour_impression }}</td>
+                                    <td>{{ row.optimisation_score }}</td>
+                                    <td>{{ row.optimisation_score_campaign_name }}</td> 
+                                  </tr>
+                                    {% endfor %}
+                                    {% else %}
+                                    {% for row in page_obj %}
+                                    <tr>
+                                    <td>
+                                      <input type="checkbox" name="selected-rows" value="{{ row.id }}">
                                     </td>
                                     <td>{{ page_obj.start_index|add:forloop.counter0 }}</td> <!-- Index number -->
                                     <td>{{ row.date }}</td>
@@ -165,41 +229,39 @@
                                     <td>{{ row.optimisation_score_campaign_name }}</td>
                                 </tr>
                                 {% endfor %}
+                                {% endif %}
                             </tbody>
                         </table>
-                        <div class="pagination">
-                            <span class="step-links">
-                              <!-- Pagination links -->
-                              {% if page_obj.has_previous %}
-                                <a href="?page=1">&laquo; First</a>
-                                <a href="?page={{ page_obj.previous_page_number }}">Previous</a>
-                              {% endif %}
-                              
-                              <span class="current-page">{{ page_obj.number }}</span>
-                              
-                              {% if page_obj.has_next %}
-                                <a href="?page={{ page_obj.next_page_number }}">Next</a>
-                                <a href="?page={{ page_obj.paginator.num_pages }}">Last &raquo;</a>
-                              {% endif %}
-                              
-                              <!-- Row per page dropdown menu by Satish-->
-                              <select id="row-per-page" onchange="changeRowsPerPage(this.value)">
-                                <option value="10">10 Rows</option>
-                                <option value="20">20 Rows</option>
-                                <option value="50">50 Rows</option>
-                                <option value="100">100 Rows</option>
-                              </select>
-                            </span>
-                          </div>
-                          <script>
-                            function changeRowsPerPage(rows) {
-                              const urlParams = new URLSearchParams(window.location.search);
-                              urlParams.set('rows', rows);
-                              window.location.search = urlParams.toString();
-                            }
-                            </script>
-                    </div> <!--Above code is changed by Satish-->
                 </div>
+              <div class="pagination" style="display:block">
+                <div>
+                  <form action="{% url 'ad_page' %}" method="get" class="pagination-form">
+                    <label for="rows" class="pagination-label">Rows per page:</label>
+                    <select name="rows" id="rows" onchange="this.form.submit()" class="pagination-select">
+                      <option value="5" {% if rows_per_page == 5 %}selected{% endif %}>5</option>
+                      <option value="10" {% if rows_per_page == 10 %}selected{% endif %}>10</option>
+                      <option value="20" {% if rows_per_page == 20 %}selected{% endif %}>20</option>
+                      <option value="All" {% if rows_per_page == "All" %}selected{% endif %}>All</option>
+                      <!-- Add more options as needed -->
+                    </select>
+                  </form>
+                </div>
+                <div class="step-links">
+                  <!-- Pagination links -->
+                  {% if page_obj.has_previous %}
+                    <a href="?rows={{ rows_per_page }}&page=1">&laquo; First</a>
+                    <a href="?rows={{ rows_per_page }}&page={{ page_obj.previous_page_number }}">Previous</a>
+                  {% endif %}
+                  
+                  <span class="current-page">{{ page_obj.number }}</span>
+                  
+                  {% if page_obj.has_next %}
+                    <a href="?rows={{ rows_per_page }}&page={{ page_obj.next_page_number }}">Next</a>
+                    <a href="?rows={{ rows_per_page }}&page={{ page_obj.paginator.num_pages }}">Last &raquo;</a>
+                  {% endif %} 
+                </div>
+              </div>
+          </div> 
             </div>
             <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
             <script>
@@ -396,6 +458,30 @@
                   }
                   
                   .pagination .current-page {
+                    font-weight: bold;
+                  }
+                  .pagination-form {
+                    display: flex;
+                    align-items: center;
+                    justify-content: flex-end;
+                    top: -20px;
+                  }
+                
+                  .pagination-label {
+                    margin-right: 10px;
+                    font-weight: bold;
+                    color: #333;
+                  }
+                
+                  .pagination-select {
+                    padding: 5px;
+                    font-size: 14px;
+                    border: 1px solid #ccc;
+                    border-radius: 4px;
+                  }
+                
+                  /* Style the selected option */
+                  .pagination-select option[selected] {
                     font-weight: bold;
                   }
                   

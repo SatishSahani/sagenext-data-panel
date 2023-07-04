@@ -176,43 +176,18 @@ def ad_page(request):
     
     else:
         ad_data = AdwordData.objects.all()
-        paginator = Paginator(ad_data, 10)  # Display 10 rows per page
-        page_number = request.GET.get('page')
-        page_obj = paginator.get_page(page_number)
-        return render(request, 'ad_page.html', {'page_obj': page_obj})
-        # return render(request, 'ad_page.html', {'ad_data': ad_data})
+        rows_per_page = request.GET.get('rows', 10)  # Get the number of rows per page from the query parameter 'rows'
+        # rows_per_page = None
+        if rows_per_page == "All":
+            paginator = None  # No pagination if 'all' is selected
+            page_obj = ad_data
+        else:
+            rows_per_page = int(rows_per_page)
+            paginator = Paginator(ad_data, rows_per_page)
+            page_number = request.GET.get('page')
+            page_obj = paginator.get_page(page_number)
+        return render(request, 'ad_page.html', {'page_obj': page_obj, 'rows_per_page': rows_per_page})
 
-def ad_data_list(request):
-    ad_data = AdwordData.objects.all()
-    paginator = Paginator(ad_data, 10)  # Display 10 rows per page
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
-    return render(request, 'ad_page.html', {'page_obj': page_obj})
-    # return render(request, 'ad_page.html', {'ad_data': ad_data})
-
-#by satish 04-july23    
-
-# def ad_page(request):
-#     return render(request, 'ad_page.html')
-# def ad_data_delete(request, ad_data_id):
-#     ad_data = get_object_or_404(AdData, id=ad_data_id)
-#     if request.method == 'POST':
-#         ad_data.delete()
-#         return redirect('ad_page')
-#     return render(request, 'ad_page.html')  
-
-def ad_data_delete(request):
-   
-    ad_data = AdwordData.objects.all()    
-    if request.method == 'POST':
-        delete_ids = request.POST.getlist('delete')
-        AdwordData.objects.filter(id__in=delete_ids).delete()
-        return redirect('ad_page')
-    
-    return render(request, 'ad_page.html', {'ad_data': ad_data})
-
-
-#new
 def delete_selected_rows(request):
     if request.method == 'POST':
         ids = request.POST.getlist('ids[]')
@@ -223,4 +198,3 @@ def delete_selected_rows(request):
         except:
             return JsonResponse({'success': False})
 
-#new
