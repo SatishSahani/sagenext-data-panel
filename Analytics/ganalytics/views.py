@@ -336,19 +336,18 @@ def analytics_data(request):
 
     else:
         ad_data = AnalyticData.objects.all()
-        paginator = Paginator(ad_data, 10)  # Display 10 rows per page
-        page_number = request.GET.get('page')
-        page_obj = paginator.get_page(page_number)
-        return render(request, 'Analytics.html', {'page_obj': page_obj})
+        rows_per_page = request.GET.get('rows', 10)  # Get the number of rows per page from the query parameter 'rows'
+        # rows_per_page = None
+        if rows_per_page == "All":
+            paginator = None  # No pagination if 'all' is selected
+            page_obj = ad_data
+        else:
+            rows_per_page = int(rows_per_page)
+            paginator = Paginator(ad_data, rows_per_page)
+            page_number = request.GET.get('page')
+            page_obj = paginator.get_page(page_number)
+        return render(request, 'Analytics.html', {'page_obj': page_obj,  'rows_per_page': rows_per_page})
         # return render(request, 'Analytics.html', {'ad_data': ad_data})
-
-def ad_data_list(request):
-    ad_data = AnalyticData.objects.all()
-    paginator = Paginator(ad_data, 10)  # Display 10 rows per page
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
-    return render(request, 'Analytics.html', {'page_obj': page_obj})
-    # return render(request, 'Analytics.html', {'ad_data': ad_data})
 
 def delete_selected_rows(request):
     if request.method == 'POST':
@@ -359,7 +358,3 @@ def delete_selected_rows(request):
             return JsonResponse({'success': True})
         except:
             return JsonResponse({'success': False})
-        
-# def myview(request):
-#     data = AnalyticData.objects.all()
-    
