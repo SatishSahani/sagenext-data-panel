@@ -1,0 +1,10 @@
+.ownTable {
+  width: 100%;
+  overflow: auto;
+}
+.ownTable table thead {
+  position: initial !important;
+}
+.ownTable table thead tr th {
+  white-space: nowrap;
+}/*# sourceMappingURL=global.css.map */

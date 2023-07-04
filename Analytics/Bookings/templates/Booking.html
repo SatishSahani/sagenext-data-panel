@@ -1,0 +1,200 @@
+{% comment %} {% extends 'dashboard.html' %}
+{% load static %}
+
+{% block content %}
+
+
+    <div class="panel-heading">
+        <h4 class="panel-title">Upload File</h4>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="file" name="myfile">
+            <input type="submit" value="Upload">
+          </form>
+    </div>
+    <h1 class="page-header"> <small></small></h1>
+			<!-- END page-header -->
+			<!-- BEGIN panel -->
+			<div class="panel panel-inverse">
+                <div class="panel-heading">
+                    <h4 class="panel-title">Bookings Data</h4>
+                    <div class="panel-heading-btn">
+                        <form id="deleteForm"name='delete' action="{% url 'delete' %}" method="post">
+                            {% csrf_token %}
+                            
+                            <button id="deleteButton" type="submit" class="btn btn-danger btn-sm">Delete</button>
+                        </form>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Index</th>
+                                <th>Month</th>
+                                <th>Impression</th>
+                                <th>Cost</th>
+                                <th>Conversions</th>
+                                <th>Bookings</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for row in ad_data %}
+                            <tr>
+                                <td>
+                                    <input type="checkbox" name="delete" value="{{ row.id }}">
+                                </td>
+                                <td>{{ forloop.counter }}</td> <!-- Index number -->
+                                <td>{{ row.month }}</td>
+                                <td>{{ row.impression }}</td>
+                                <td>{{ row.cost }}</td>
+                                <td>{{ row.conversions }}</td>
+                                <td>{{ row.bookings }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <script>
+                // JavaScript code for deleting selected rows
+                document.getElementById('deleteButton').addEventListener('click', function (event) {
+                    event.preventDefault(); // Prevent the form from submitting
+            
+                    var checkboxes = document.getElementsByName('delete');
+                    var checkedIds = [];
+            
+                    checkboxes.forEach(function (checkbox) {
+                        if (checkbox.checked) {
+                            checkedIds.push(checkbox.value);
+                        }
+                    });
+            
+                    if (checkedIds.length > 0) {
+                        if (confirm('Are you sure you want to delete the selected rows?')) {
+                            // You can make an AJAX request here to delete the selected rows
+                            console.log('Selected row IDs:', checkedIds);
+            
+                            // Update the form action URL with the selected IDs
+                            document.getElementById('deleteForm').action = document.getElementById('deleteForm').action + '?ids=' + checkedIds.join(',');
+
+                            
+                            // Submit the form
+                            document.getElementById('deleteForm').submit();
+                        }
+                    } else {
+                        alert('Please select rows to delete.');
+                    }
+                });
+            </script>
+            
+				</div>
+			</div>
+			
+    
+            <style>
+                /* CSS styles remain the same */
+                body {
+                    font-family: Arial, sans-serif;
+                    background-color: #f5f5f5;
+                    padding: 20px;
+                }
+        
+                h1 {
+                    text-align: center;
+                    margin-bottom: 20px;
+                    color: #333;
+                }
+        
+                table {
+                    width: 100%;
+                    border-collapse: collapse;
+                    background-color: #fff;
+                    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+                    
+                }
+
+          
+        
+                th, td {
+                    padding: 12px;
+                    text-align: left;
+                    border-bottom: 1px solid #ddd;
+                    color: #333;
+                }
+
+     
+                th {
+                    background-color: #f2f2f2;
+                    font-weight: bold;
+                }
+        
+                tr:hover {
+                    background-color: #f9f9f9;
+                }
+        
+                .btn-views,
+                .btn-edit,
+                .btn-delete {
+                    padding: 4px 8px;
+                    font-size: 12px;
+                    line-height: 1;
+                    background-color: #4CAF50;
+                    color: #fff;
+                    border: none;
+                    border-radius: 4px;
+                    cursor: pointer;
+                    text-decoration: none;
+                }
+        
+                .btn-views:hover {
+                    background-color: #45a049;
+                }
+        
+                .btn-edit {
+                    background-color: #007bff;
+                }
+        
+                .btn-edit:hover {
+                    background-color: #0069d9;
+                }
+        
+                .btn-delete {
+                    background-color: #dc3545;
+                }
+        
+                .btn-delete:hover {
+                    background-color: #c82333;
+                }
+              .panel  table thead {
+                    position: sticky;
+                    top: 89px;
+                    z-index: 999;
+                    background-color: #f2f2f2;
+                }
+
+                .panel .panel-heading{
+                    position:sticky;
+                    top:50px;
+                    z-index:9999;
+                    
+                }
+
+                .panel.panel-expand .panel-heading{
+                    top:0 !important;
+                }
+
+                
+                .panel.panel-expand table thead{
+                    top:-16px !important;
+                }
+            </style>
+				</div>
+			</div>
+</div>
+
+
+
+{% endblock content %} {% endcomment %}

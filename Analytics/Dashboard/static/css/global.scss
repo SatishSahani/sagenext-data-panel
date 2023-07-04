@@ -1,0 +1,21 @@
+.ownTable{
+    width: 100%;
+    overflow: auto;
+    table{
+        thead{
+            position: initial !important;
+            tr{
+                th{
+                    white-space: nowrap;
+                }
+            }
+        }
+        tbody{
+            tr{
+                td{
+
+                }
+            }
+        }
+    }
+}

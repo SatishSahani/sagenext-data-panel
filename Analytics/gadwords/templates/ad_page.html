@@ -1,0 +1,409 @@
+{% extends 'dashboard.html' %}
+{% load static %}
+
+{% block content %}
+
+
+    <div class="panel-heading">
+        <h4 class="panel-title">Upload File</h4>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="file" name="myfile">
+            <input type="submit" value="Upload">
+          </form>
+    </div>
+    <h1 class="page-header"> <small></small></h1>
+			<!-- END page-header -->
+			<!-- BEGIN panel -->
+            
+			<div class="panel panel-inverse">
+                <div class="panel-heading">
+                    <h4 class="panel-title">Adword Data</h4>
+                    <div class="panel-heading-btn">
+                        <a href="/dashboard/" class="btn btn-primary" style="margin-right:4px">Back to Dashboard</a>
+                        <!--<form id="deleteForm" name='delete' action="{% url 'delete' %}" method="post">
+                            {% csrf_token %}
+                            <button id="deleteButton" type="submit" class="btn btn-danger btn-sm">Delete</button>
+                        </form> -->
+                        {% csrf_token %}
+                        <button id="delete-button" class="btn btn-danger btn-sm" style="margin-right:4px" disabled>Delete Selected</button>
+                        <button id="view-graph-button" class="btn btn-danger btn-sm" disabled>View Graph</button>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div class="ownTable">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                <th>Index</th>
+                                <th>Date</th>
+                                <th>Network</th>
+                                <th>Network Clicks</th>
+                                <th>Network Cost(in US$)</th>
+                                <th>Network Avg CPC</th>
+                                <th>Campaign Name</th>
+                                <th>Campaign AdGroup Name</th>
+                                <th>Campaign Cost(in US$)</th>
+                                <th>Campaign Cost Comparison(in US$)</th>
+                                <th>Campaign Clicks</th>
+                                <th>Campaign Clicks Comparison</th>
+                                <th>Campaign Interactions</th>
+                                <th>Interaction Comparison</th>
+                                <th>Campaign1 Name</th>
+                                <th>Campaign1 Campaign Group Name</th>
+                                <th>Campaign1 Campaign Status</th>
+                                <th>Campaign1 Cost(in US$)</th>
+                                <th>Campaign1 Conversions</th>
+                                <th>Campaign1 Cost/Conv.(in US$)</th>
+                                <th>Search</th>
+                                <th>Search Cost(in US$)</th>
+                                <th>Search Clicks</th>
+                                <th>Search Impressions</th>
+                                <th>Search Conversion</th>
+                                <th>Search Word</th>
+                                <th>Search Word Clicks</th>
+                                <th>Search Word Impressions</th>
+                                <th>Search Word Conversions</th>
+                                <th>Search Word Cost(in US$)</th>
+                                <th>Search Word Top Containing Queries</th>
+                                <th>Search Keyword</th>
+                                <th>Search Keyword Match Type</th>
+                                <th>Search Keyword Criterion Status</th>
+                                <th>Search Keyword Campaign Status</th>
+                                <th>Search Keyword Ad Group Status</th>
+                                <th>Search Keyword Cost(in US$)</th>
+                                <th>Search Keyword Clicks</th>
+                                <th>Search Keyword CTR</th>
+                                <th>Demographics Gender</th>
+                                <th>Demographics Age Range</th>
+                                <th>Demographics Impression</th>
+                                <th>Demographics Total Percent</th>
+                                <th>Device</th>
+                                <th>Device Cost(in US$)</th>
+                                <th>Device Clicks</th>
+                                <th>Device Impressions</th>
+                                <th>Clicks</th>
+                                <th>Conversions</th>
+                                <th>Cost / Conv.(in US$)</th>
+                                <th>Cost(in US$)</th>
+                                <th>Per Hour</th>
+                                <th>Per Hour Impression</th>
+                                <th>Per Day</th>
+                                <th>Per Day Impression</th>
+                                <th>Per Day per Hour</th>
+                                <th>Per Day per Hour Impression</th>
+                                <th>Optimisation Score</th>
+                                <th>Optimisation Score Campaign Name</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% comment %} {% for row in ad_data %} {% endcomment %}
+                                {% for row in page_obj %}
+                                <tr>
+                                    <td>
+                                        <input type="checkbox" name="selected-rows" value="{{ row.id }}">
+                                    </td>
+                                    <td>{{ page_obj.start_index|add:forloop.counter0 }}</td> <!-- Index number -->
+                                    <td>{{ row.date }}</td>
+                                    <td>{{ row.network }}</td>
+                                    <td>{{ row.network_clicks }}</td>
+                                    <td>{{ row.network_cost }}</td>
+                                    <td>{{ row.network_avg_cpc }}</td>
+                                    <td>{{ row.campaign_name }}</td>
+                                    <td>{{ row.campaign_adgroup_name }}</td>
+                                    <td>{{ row.campaign_cost }}</td>
+                                    <td>{{ row.campaign_cost_comparison }}</td>
+                                    <td>{{ row.campaign_clicks }}</td>
+                                    <td>{{ row.campaign_clicks_comparison }}</td>
+                                    <td>{{ row.campaign_interactions }}</td>
+                                    <td>{{ row.interaction_comparison }}</td>
+                                    <td>{{ row.campaign1_name }}</td>
+                                    <td>{{ row.campaign1_campaign_group_name }}</td>
+                                    <td>{{ row.campaign1_campaign_status }}</td>
+                                    <td>{{ row.campaign1_cost }}</td>
+                                    <td>{{ row.campaign1_conversions }}</td>
+                                    <td>{{ row.campaign1_cost_conv }}</td>
+                                    <td>{{ row.search }}</td>
+                                    <td>{{ row.search_cost }}</td>
+                                    <td>{{ row.search_clicks }}</td>
+                                    <td>{{ row.search_impressions }}</td>
+                                    <td>{{ row.search_conversion }}</td>
+                                    <td>{{ row.search_word }}</td>
+                                    <td>{{ row.search_word_clicks }}</td>
+                                    <td>{{ row.search_word_impressions }}</td>
+                                    <td>{{ row.search_word_conversions }}</td>
+                                    <td>{{ row.search_word_cost }}</td>
+                                    <td>{{ row.search_word_top_containing_queries }}</td>
+                                    <td>{{ row.search_keyword }}</td>
+                                    <td>{{ row.search_keyword_match_type }}</td>
+                                    <td>{{ row.search_keyword_criterion_status }}</td>
+                                    <td>{{ row.search_keyword_campaign_status }}</td>
+                                    <td>{{ row.search_keyword_ad_group_status }}</td>
+                                    <td>{{ row.search_keyword_cost }}</td>
+                                    <td>{{ row.search_keyword_clicks }}</td>
+                                    <td>{{ row.search_keyword_ctr }}</td>
+                                    <td>{{ row.demographics_gender }}</td>
+                                    <td>{{ row.demographics_age_range }}</td>
+                                    <td>{{ row.demographics_impression }}</td>
+                                    <td>{{ row.demographics_total_percent }}</td>
+                                    <td>{{ row.device }}</td>
+                                    <td>{{ row.device_cost }}</td>
+                                    <td>{{ row.device_clicks }}</td>
+                                    <td>{{ row.device_impressions }}</td>
+                                    <td>{{ row.clicks }}</td>
+                                    <td>{{ row.conversions }}</td>
+                                    <td>{{ row.cost_conv }}</td>
+                                    <td>{{ row.cost }}</td>
+                                    <td>{{ row.per_hour }}</td>
+                                    <td>{{ row.per_hour_impression }}</td>
+                                    <td>{{ row.per_day }}</td>
+                                    <td>{{ row.per_day_impression }}</td>
+                                    <td>{{ row.per_day_per_hour }}</td>
+                                    <td>{{ row.per_day_per_hour_impression }}</td>
+                                    <td>{{ row.optimisation_score }}</td>
+                                    <td>{{ row.optimisation_score_campaign_name }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                        <div class="pagination">
+                            <span class="step-links">
+                              <!-- Pagination links -->
+                              {% if page_obj.has_previous %}
+                                <a href="?page=1">&laquo; First</a>
+                                <a href="?page={{ page_obj.previous_page_number }}">Previous</a>
+                              {% endif %}
+                              
+                              <span class="current-page">{{ page_obj.number }}</span>
+                              
+                              {% if page_obj.has_next %}
+                                <a href="?page={{ page_obj.next_page_number }}">Next</a>
+                                <a href="?page={{ page_obj.paginator.num_pages }}">Last &raquo;</a>
+                              {% endif %}
+                              
+                              <!-- Row per page dropdown menu by Satish-->
+                              <select id="row-per-page" onchange="changeRowsPerPage(this.value)">
+                                <option value="10">10 Rows</option>
+                                <option value="20">20 Rows</option>
+                                <option value="50">50 Rows</option>
+                                <option value="100">100 Rows</option>
+                              </select>
+                            </span>
+                          </div>
+                          <script>
+                            function changeRowsPerPage(rows) {
+                              const urlParams = new URLSearchParams(window.location.search);
+                              urlParams.set('rows', rows);
+                              window.location.search = urlParams.toString();
+                            }
+                            </script>
+                    </div> <!--Above code is changed by Satish-->
+                </div>
+            </div>
+            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+            <script>
+                $(document).ready(function() {
+                  // Get the CSRF token from the cookie
+                  var csrftoken = Cookies.get('csrftoken');
+                
+                  // Set the CSRF token for AJAX requests
+                  $.ajaxSetup({
+                    beforeSend: function(xhr, settings) {
+                      xhr.setRequestHeader('X-CSRFToken', csrftoken);
+                    }
+                  });
+                
+                  $('#delete-button').click(function() {
+                    var selectedRows = $('input[name="selected-rows"]:checked');
+                    var ids = [];
+                    selectedRows.each(function() {
+                      ids.push($(this).val());
+                    });
+                    if (ids.length > 0) {
+                      $.ajax({
+                        url: 'delete_selected_rows/',
+                        type: 'POST',
+                        data: {ids: ids},
+                        success: function(response) {
+                            if (response.success) {
+                                // Reload the page after a short delay
+                                if (confirm('Are you sure you want to delete the selected rows?')){
+                                  window.location.reload();
+                              } }
+                              else {
+                                alert('Failed to delete selected rows. Please try again.');
+                              }
+                            },
+                            error: function() {
+                              alert('An error occurred while deleting selected rows. Please try again.');
+                            }
+                          });
+                        }
+                      });
+                      $('input[name="selected-rows"]').change(function() {
+                        var selectedCount = $('input[name="selected-rows"]:checked').length;
+                        if (selectedCount === 1) {
+                          $('#view-graph-button').prop('disabled', false);
+                        } else {
+                          $('#view-graph-button').prop('disabled', true);
+                        }
+                      });
+                    
+                      $('#view-graph-button').click(function() {
+                        // Redirect to the dashboard page with the selected row's data
+                        var selectedRowId = $('input[name="selected-rows"]:checked').val();
+                        window.location.href = '/dashboard/?id=' + selectedRowId;
+                      });
+                    });
+                    $(document).ready(function() {
+                        // Function to check if any checkbox is selected and enable/disable the button accordingly
+                        function checkSelected() {
+                          var selectedRows = $('input[name="selected-rows"]:checked');
+                          if (selectedRows.length > 0) {
+                            $('#delete-button').prop('disabled', false);
+                          } else {
+                            $('#delete-button').prop('disabled', true);
+                          }
+                        }
+                    
+                        // Call the checkSelected function when the page loads
+                        checkSelected();
+                    
+                        // Call the checkSelected function whenever there's a change in the checkboxes
+                        $('input[name="selected-rows"]').change(function() {
+                          checkSelected();
+                        });
+                      });
+                    </script>
+		</div>
+	</div>
+		
+    
+            <style>
+                /* CSS styles remain the same */
+                body {
+                    font-family: Arial, sans-serif;
+                    background-color: #f5f5f5;
+                    padding: 20px;
+                }
+        
+                h1 {
+                    text-align: center;
+                    margin-bottom: 20px;
+                    color: #333;
+                }
+        
+                table {
+                    width: 100%;
+                    border-collapse: collapse;
+                    background-color: #fff;
+                    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+                    
+                }
+
+          
+        
+                th, td {
+                    padding: 12px;
+                    text-align: left;
+                    border-bottom: 1px solid #ddd;
+                    color: #333;
+                }
+
+     
+                th {
+                    background-color: #f2f2f2;
+                    font-weight: bold;
+                }
+        
+                tr:hover {
+                    background-color: #f9f9f9;
+                }
+        
+                .btn-views,
+                .btn-edit,
+                .btn-delete {
+                    padding: 4px 8px;
+                    font-size: 12px;
+                    line-height: 1;
+                    background-color: #4CAF50;
+                    color: #fff;
+                    border: none;
+                    border-radius: 4px;
+                    cursor: pointer;
+                    text-decoration: none;
+                }
+        
+                .btn-views:hover {
+                    background-color: #45a049;
+                }
+        
+                .btn-edit {
+                    background-color: #007bff;
+                }
+        
+                .btn-edit:hover {
+                    background-color: #0069d9;
+                }
+        
+                .btn-delete {
+                    background-color: #dc3545;
+                }
+        
+                .btn-delete:hover {
+                    background-color: #c82333;
+                }
+              .panel  table thead {
+                    position: sticky;
+                    top: 89px;
+                    z-index: 999;
+                    background-color: #f2f2f2;
+                }
+
+                .panel .panel-heading{
+                    position:sticky;
+                    top:50px;
+                    z-index:9999;
+                    
+                }
+
+                .panel.panel-expand .panel-heading{
+                    top:0 !important;
+                }
+
+                
+                .panel.panel-expand table thead{
+                    top:-16px !important;
+                }
+                .pagination {
+                    display: flex;
+                    justify-content: center;
+                    margin-top: 20px;
+                  }
+                  
+                  .pagination a {
+                    color: white;
+                    text-decoration: none;
+                    padding: 8px 12px;
+                    margin: 0 5px;
+                    border-radius: 4px;
+                    background-color: #348fe2;
+                  }
+                  
+                  .pagination a:hover {
+                    background-color: #ddd;
+                  }
+                  
+                  .pagination .current-page {
+                    font-weight: bold;
+                  }
+                  
+            </style>
+				</div>
+			</div>
+</div>
+
+
+
+{% endblock content %}

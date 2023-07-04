@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<link href="{% static 'plugins/dropzone/dist/min/dropzone.min.css' %}" rel="stylesheet">
+<script src="{% static 'plugins/dropzone/dist/min/dropzone.min.js' %}"></script>
+
+<div class="container">
+  <div class="row">
+    
+    <div class="col-12 mx-auto">
+      <div id="dropzone" style="position:absolute;right:22%;top:50%;transform: translateY(-50%);" class="text-center">
+		<div style="border: 1px solid #ddd; border-radius: 4px; padding: 20px;">
+			<form action="/upload/" method="POST" class="dropzone needsclick" id="demo-upload" enctype="multipart/form-data">
+				{% csrf_token %}
+				<div class="dz-message needsclick">
+				  Drop files <b>here</b> or <b>click</b> to upload.<br />
+				  <span class="dz-note needsclick">
+					(This is just a demo dropzone. Selected files are <strong>not</strong> actually uploaded.)
+				  </span>
+				</div>
+			  </form>
+        {% comment %} <form method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+          <input type="file" name="myfile">
+          <input type="submit" value="Upload">
+        </form>       {% endcomment %}
+		</div>
+		
+			 
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock content %}
+                    <script src="../static/js/vendor.min.js"></script>
+                    <script src="../static/js/app.min.js"></script>

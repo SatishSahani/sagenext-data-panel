@@ -1,0 +1,174 @@
+{% extends 'base.html' %}
+<!DOCTYPE html>
+{% load static %}
+
+{% block content %}
+		<!-- END #sidebar -->
+		<!-- BEGIN #content -->
+		<div id="content" class="app-content">
+			<div class="panel panel-inverse">
+				<div class="panel-heading">
+					<h4 class="panel-title">Adword Data</h4>
+					<div class="panel-heading-btn">
+						<a href="javascript:;" class="btn btn-xs btn-icon btn-default" data-toggle="panel-expand"><i class="fa fa-expand"></i></a>
+						<a href="javascript:;" class="btn btn-xs btn-icon btn-success" data-toggle="panel-reload"><i class="fa fa-redo"></i></a>
+						<a href="javascript:;" class="btn btn-xs btn-icon btn-warning" data-toggle="panel-collapse"><i class="fa fa-minus"></i></a>
+						<a href="javascript:;" class="btn btn-xs btn-icon btn-danger" data-toggle="panel-remove"><i class="fa fa-times"></i></a>
+					</div>
+				</div>
+				<div class="panel-body">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Month</th>
+                                <th>Impression</th>
+                                <th>Cost</th>
+                                <th>Conversions</th>
+                                <th>Bookings</th>
+                                <th></th> <!-- New column for views -->
+                                <th></th> <!-- New column for edit button -->
+                                <th></th> <!-- New column for delete button -->
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for data in ad_data %}
+                            <tr>
+                                <td>{{ data.month }}</td>
+                                <td>{{ data.impression }}</td>
+                                <td>{{ data.cost }}</td>
+                                <td>{{ data.conversions }}</td>
+                                <td>{{ data.bookings }}</td>
+                                <td>
+                                    <a href="{% url 'view' data.id %}" class="btn-views">Views</a>
+                                </td> <!-- Views button for each row -->
+                                <td>
+                                    <a href="{% url 'edit' data.id %}" class="btn-edit">Edit</a>
+                                </td>
+                                <td>
+                                    <form action="{% url 'delete' data.id %}" method="post" class="d-inline">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                    </form>
+                                </td> <!-- Delete button for each row -->
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                
+                    <script>
+                        // JavaScript code for deleting a row
+                        function deleteRow(button) {
+                            // Get the table row associated with the clicked button
+                            var row = button.parentNode.parentNode;
+                
+                            // Remove the table row from the DOM
+                            row.parentNode.removeChild(row);
+                        }
+                    </script>  
+				</div>
+			</div>
+			
+    
+            <style>
+                /* CSS styles remain the same */
+                body {
+                    font-family: Arial, sans-serif;
+                    background-color: #f5f5f5;
+                    padding: 20px;
+                }
+        
+                h1 {
+                    text-align: center;
+                    margin-bottom: 20px;
+                    color: #333;
+                }
+        
+                table {
+                    width: 100%;
+                    border-collapse: collapse;
+                    background-color: #fff;
+                    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+                    
+                }
+
+          
+        
+                th, td {
+                    padding: 12px;
+                    text-align: left;
+                    border-bottom: 1px solid #ddd;
+                    color: #333;
+                }
+
+     
+                th {
+                    background-color: #f2f2f2;
+                    font-weight: bold;
+                }
+        
+                tr:hover {
+                    background-color: #f9f9f9;
+                }
+        
+                .btn-views,
+                .btn-edit,
+                .btn-delete {
+                    padding: 4px 8px;
+                    font-size: 12px;
+                    line-height: 1;
+                    background-color: #4CAF50;
+                    color: #fff;
+                    border: none;
+                    border-radius: 4px;
+                    cursor: pointer;
+                    text-decoration: none;
+                }
+        
+                .btn-views:hover {
+                    background-color: #45a049;
+                }
+        
+                .btn-edit {
+                    background-color: #007bff;
+                }
+        
+                .btn-edit:hover {
+                    background-color: #0069d9;
+                }
+        
+                .btn-delete {
+                    background-color: #dc3545;
+                }
+        
+                .btn-delete:hover {
+                    background-color: #c82333;
+                }
+              .panel  table thead {
+                    position: sticky;
+                    top: 89px;
+                    z-index: 999;
+                    background-color: #f2f2f2;
+                }
+
+                .panel .panel-heading{
+                    position:sticky;
+                    top:50px;
+                    z-index:9999;
+                    
+                }
+
+                .panel.panel-expand .panel-heading{
+                    top:0 !important;
+                }
+
+                
+                .panel.panel-expand table thead{
+                    top:-16px !important;
+                }
+            </style>
+            
+            {% endblock content %} 
+                    <script src="../static/js/vendor.min.js"></script>
+                    <script src="../static/js/app.min.js"></script>
+</body>
+</html>
