@@ -217,6 +217,8 @@ def dashboard(request):
     else:
         # Handle the case when the 'id' parameter is not provided
         return render(request, 'error.html', {'message': 'ID parameter is missing'})
+    
+# code by abhi    
 
 # def generate_graph(request):
 #     # Retrieve data from the database
@@ -281,7 +283,7 @@ def dashboard(request):
 
 #     return response
 
-# code by satish 6July23
+# Graph1 code by satish 6July23
 import plotly.graph_objects as go
 from django.shortcuts import render
 from plotly.offline import plot
@@ -310,6 +312,13 @@ def generate_graph(request):
     fig.add_trace(go.Bar(x=campaign_names, y=campaign_clicks, name='Campaign Clicks'))
     fig.add_trace(go.Bar(x=campaign_names, y=campaign_interactions, name='Campaign Interactions'))
 
+
+  # Update axis labels
+    fig.update_layout(
+        xaxis_title="Campaign Ad Group Name",
+        yaxis_title="Values")
+
+
     # Add data labels to the bars
     fig.update_layout(barmode='group')
     fig.update_traces(texttemplate='%{y}', textposition='auto')
@@ -318,3 +327,85 @@ def generate_graph(request):
     graph_html = plot(fig, output_type='div')
 
     return render(request, 'graph.html', {'graph_html': graph_html})
+
+
+
+# # code be satish for 2nd Graph
+# import plotly.graph_objects as go
+# from django.shortcuts import render
+# from plotly.offline import plot
+
+# def generate_graph(request):
+#     # Retrieve data from the database
+#     data = AdwordData.objects.all()  # Replace YourModel with the actual model representing your data
+
+#     # Extract values for the required columns
+#     campaign_name = [entry.campaign_name for entry in data]
+#     campaign1_cost = [entry.campaign1_cost for entry in data]
+#     campaign1_conversions = [entry.campaign1_conversions for entry in data]
+#     campaign1_cost_per_conv = [entry.campaign1_cost_per_conv for entry in data]
+
+#     # Create the Plotly figure
+#     fig = go.Figure()
+#     fig.add_trace(go.Bar(x=campaign_name, y=campaign1_cost, name='Campaign Cost'))
+#     fig.add_trace(go.Bar(x=campaign_name, y=campaign1_conversions, name='Campaign Conversions'))
+#     fig.add_trace(go.Bar(x=campaign_name, y=campaign1_cost_per_conv, name='Campaign Cost per Conversion'))
+
+#     # Customize the figure layout
+#     fig.update_layout(
+#         barmode='group',
+#         xaxis_title='Campaign Ad Group Name',
+#         yaxis_title='Values',
+#         title='Campaign Metrics'
+#     )
+
+#     # Convert the Plotly figure to HTML
+#     graph_html = plot(fig, output_type='div')
+
+#     return render(request, 'graph.html', {'graph_html': graph_html})
+
+
+
+# #Graph3 #
+# import plotly.graph_objects as go
+# from django.shortcuts import render
+# from plotly.offline import plot
+
+# def generate_graph(request):
+#     # Retrieve data from the database
+#     data = AdwordData.objects.all()  # Replace YourModel with the actual model representing your data
+
+#     # Extract values for the required columns
+#     per_day = [entry.per_day for entry in data]
+#     per_day_impression = [entry.per_day_impression for entry in data]
+
+#     # Create the Plotly figure
+#     fig = go.Figure()
+#     # fig.add_trace(go.Scatter(x=per_day, y=per_day_impression, mode='lines+markers', text=per_day_impression, textposition='top center'))
+# # import plotly.graph_objects as go
+
+#     fig = go.Figure()
+#     fig.add_trace(go.Scatter(
+#     x=per_day,
+#     y=per_day_impression,
+#     mode='lines+markers',
+#     text=per_day_impression,
+#     textposition='top center',
+#     line=dict(color='green')  # Set the line color to light green
+# ))
+
+# #     fig.update_layout(
+# #         plot_bgcolor='darkgreen'  # Set the background color to black
+# # )
+#     # Customize the figure layout
+#     fig.update_layout(
+#         xaxis_title='Week Days',
+#         yaxis_title='Impressions',
+#         title='Impressions by Week Days'
+#     )
+
+#     # Convert the Plotly figure to HTML
+#     graph_html = plot(fig, output_type='div')
+
+#     return render(request, 'graph.html', {'graph_html': graph_html})
+
