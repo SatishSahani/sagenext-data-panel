@@ -1,6 +1,9 @@
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from .forms import UploadFileForm
+import io
+from django.http import HttpResponse
+from django.template import loader
 from django.core.paginator import Paginator
 # Create your views here.
 import csv
@@ -9,6 +12,8 @@ from django.shortcuts import render
 from .models import AdwordData
 from io import TextIOWrapper
 from datetime import datetime
+import matplotlib.pyplot as plt
+import numpy as np
 
 
 def ad_page(request):
@@ -198,3 +203,118 @@ def delete_selected_rows(request):
         except:
             return JsonResponse({'success': False})
 
+def dashboard(request):
+    id = request.GET.get('id')  # Get the 'id' parameter from the request's query parameters
+
+    if id:
+        try:
+            data = AdwordData.objects.get(id=id)  # Retrieve the data from the database based on the 'id' parameter
+            # Process the retrieved data or pass it to the template
+            return render(request, 'graph.html', {'data': data})
+        except AdwordData.DoesNotExist:
+            # Handle the case when the data with the provided 'id' doesn't exist
+            return render(request, 'error.html', {'message': 'Data not found'})
+    else:
+        # Handle the case when the 'id' parameter is not provided
+        return render(request, 'error.html', {'message': 'ID parameter is missing'})
+
+# def generate_graph(request):
+#     # Retrieve data from the database
+#     data = AdwordData.objects.all()  # Replace YourModel with the actual model representing your data
+
+#     # Extract values for the required columns
+#     campaign_names_final = [entry.campaign_adgroup_name for entry in data]
+#     campaign_names = []
+#     for item in campaign_names_final:
+#         if item != '':
+#             campaign_names.append(item)
+
+#     campaign_costs_final = [entry.campaign_cost for entry in data]
+#     campaign_costs = []
+#     for item in campaign_costs_final:
+#         if item != '':
+#             campaign_costs.append(item)
+#     campaign_clicks_final = [entry.campaign_clicks for entry in data]
+#     campaign_clicks = []
+#     for item in campaign_clicks_final:
+#         if item != '':
+#             campaign_clicks.append(item)
+#     campaign_interactions_final = [entry.campaign_interactions for entry in data]
+#     campaign_interactions=[]
+#     for item in campaign_interactions_final:
+#         if item != '':
+#             campaign_interactions.append(item)
+#     # print(campaign_costs)
+#     # Generate the bar graph
+#     x = np.arange(len(campaign_names))
+#     width = 0.1
+
+#     fig, ax = plt.subplots(figsize=(5, 15))
+#     ax.bar(x - width, campaign_costs, width, label='Campaign Cost')
+#     ax.bar(x, campaign_clicks, width, label='Campaign Clicks')
+#     ax.bar(x + width, campaign_interactions, width, label='Campaign Interactions')
+
+#     ax.set_xlabel('Campaign Ad Group Name')
+#     ax.set_ylabel('Values')
+#     ax.set_title('Campaign Metrics')
+#     ax.set_xticks(x)
+#     ax.set_xticklabels(campaign_names, rotation=45)
+#     ax.legend()
+
+#     # Save the graph to a file or render it directly
+#     # fig.savefig('path/to/save/graph.png')
+
+#     # Show the graph directly in the template
+#     # plt.tight_layout()
+#     # plt.show()
+#     # Save the graph as an image file
+#     buffer = io.BytesIO()
+#     plt.savefig(buffer, format='png')
+#     buffer.seek(0)
+
+#     # Prepare the response to render the graph in the template
+#     graph_image = buffer.getvalue()
+#     buffer.close()
+
+#     response = HttpResponse(content_type='image/png')
+#     response.write(graph_image)
+
+#     return response
+
+# code by satish 6July23
+import plotly.graph_objects as go
+from django.shortcuts import render
+from plotly.offline import plot
+import numpy as np
+
+def generate_graph(request):
+    # Retrieve data from the database
+    data = AdwordData.objects.all()  # Replace AdwordData with the actual model representing your data
+
+    # Extract values for the required columns
+    campaign_names_final = [entry.campaign_adgroup_name for entry in data]
+    campaign_names = [item for item in campaign_names_final if item != '']
+
+    campaign_costs_final = [entry.campaign_cost for entry in data]
+    campaign_costs = [float(item) for item in campaign_costs_final if item != '']
+
+    campaign_clicks_final = [entry.campaign_clicks for entry in data]
+    campaign_clicks = [float(item) for item in campaign_clicks_final if item != '']
+
+    campaign_interactions_final = [entry.campaign_interactions for entry in data]
+    campaign_interactions = [float(item) for item in campaign_interactions_final if item != '']
+
+    # Create the Plotly figure
+    fig = go.Figure()
+    fig.add_trace(go.Bar(x=campaign_names, y=campaign_costs, name='Campaign Cost'))
+    fig.add_trace(go.Bar(x=campaign_names, y=campaign_clicks, name='Campaign Clicks'))
+    fig.add_trace(go.Bar(x=campaign_names, y=campaign_interactions, name='Campaign Interactions'))
+
+    # Add data labels to the bars
+    fig.update_layout(barmode='group')
+    fig.update_traces(texttemplate='%{y}', textposition='auto')
+
+    # Convert the Plotly figure to HTML
+    graph_html = plot(fig, output_type='div')
+
+    return render(request, 'graph.html', {'graph_html': graph_html})

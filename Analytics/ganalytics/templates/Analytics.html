@@ -326,7 +326,7 @@
                 </div>
                 <div class="pagination" style="display:block">
                   <div>
-                    <form action="{% url '' %}" method="get" class="pagination-form">
+                    <form action="{% url 'ad_page' %}" method="get" class="pagination-form">
                       <label for="rows" class="pagination-label">Rows per page:</label>
                       <select name="rows" id="rows" onchange="this.form.submit()" class="pagination-select">
                         <option value="5" {% if rows_per_page == 5 %}selected{% endif %}>5</option>
