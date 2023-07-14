@@ -22,6 +22,7 @@ class Migration(migrations.Migration):
                         verbose_name="ID",
                     ),
                 ),
+                ("date", models.CharField(max_length=100)),
                 ("country", models.CharField(max_length=100)),
                 ("country_new_users", models.CharField(max_length=100)),
                 ("country_benchmark_new_users", models.CharField(max_length=100)),

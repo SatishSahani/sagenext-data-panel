@@ -1162,28 +1162,37 @@
 			</div>
 			<!-- END row -->
 			<!-- BEGIN row -->
-            <div class="row">
-                <div class="col-12">
-                    {{ graph_html|safe }}
+            {% comment %} <div class="row">
+                <div class="col-">
+                    {{ graph_html1|safe }}
                 </div>
-                <div class="col-12">
+                <div>
+                    <div class="col-8">
                     {{ graph_html1|safe }}
                 </div>
             </div>
-            <div class="row">
+            <div class="row"> {% endcomment %}
                 {% comment %} <div class="col-6">
                     {{ graph_html2|safe }}
                 </div> {% endcomment %}
-				<div class="col-12">
+				{% comment %} <div class="col-">
 					{{ graph_html3|safe }}
 				</div>
-				<div class="col-12">
+				<div class="col-6">
                     {{ graph_html4|safe }}
                 </div>
-				<div class="col-12">
-                    {{ graph_html5|safe }}
-                </div>
+            </div> {% endcomment %}
+            <div class="graph-container">
+                {{ graph_html1|safe }}
             </div>
+            
+            <div class="graph-container">
+                {{ graph_html2|safe }}
+            </div>
+            <div class="graph-container">
+                {{ graph_html3|safe }}
+            </div>
+            
             {% endblock content %}
         </div>
 	<!-- END #app -->
@@ -1251,5 +1260,4 @@
 	</script>	
 </body>
 </html>
-
 

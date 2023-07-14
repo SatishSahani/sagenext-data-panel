@@ -1,6 +1,7 @@
 
 from django.contrib import admin
 from django.urls import path,include
+from ganalytics.views import Analytics_Dashboard
 from gadwords.views import ad_page
 from Meta.views import meta_data
 from ganalytics.views import analytics_data
@@ -25,5 +26,6 @@ urlpatterns = [
     path('', login_view, name='login'),
     path('dashboard/', dashboard_view, name='dashboard'),
     path('logout/', logout_view, name='logout'),
+    path('Analytics_Dashboard/', Analytics_Dashboard, name='Analytics_Dashboard')
     
 ]
