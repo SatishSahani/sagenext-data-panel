@@ -82,7 +82,7 @@ WSGI_APPLICATION = "Analytics.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.mysql",
-        "NAME": "zoylee_data",
+        "NAME": "sagenext_data",
         "USER":"root",
         "HOST":"localhost",
         "PORT":"3306",

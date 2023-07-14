@@ -78,7 +78,7 @@ def login_view(request):
             login(request, user)
             return redirect('dashboard')
         else:
-            message = 'Invalid username or password'
+            message = ('Invalid username or password')
             return render(request, 'login.html', {'message': message})
     else:
         return render(request, 'login.html')

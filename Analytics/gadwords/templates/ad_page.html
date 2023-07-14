@@ -9,8 +9,10 @@
         <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
             <input type="file" name="myfile">
-            <input type="submit" value="Upload">
+            <input type="submit" value="Upload File">
+            <a href="/dashboard/" class="btn btn-primary" style="margin-right:2px">Back to Dashboard</a>
           </form>
+          
     </div>
     <h1 class="page-header"> <small></small></h1>
 			<!-- END page-header -->
@@ -20,11 +22,12 @@
                 <div class="panel-heading">
                     <h4 class="panel-title">Adword Data</h4>
                     <div class="panel-heading-btn">
-                        <a href="/dashboard/" class="btn btn-primary" style="margin-right:4px">Back to Dashboard</a>
+                        <!-- <a href="/dashboard/" class="btn btn-primary" style="margin-right:4px">Back to Dashboard</a> -->
+                        
                         {% csrf_token %}
+                        <a href="{% url 'generate_graph' %}" class="btn btn-secondry" target="_blank">Generate Graph</a>
                         <button id="delete-button" class="btn btn-danger btn-sm" style="margin-right:4px" disabled>Delete Selected</button>
-                        <button id="view-graph-button" class="btn btn-danger btn-sm" disabled>View Graph</button>
-                    </div>
+                       <!-- <button id="view-graph-button" class="btn btn-danger btn-sm" disabled>View Graph</button>  -->                    </div>
                 </div>
                 <div class="panel-body">
                     <div class="ownTable">
@@ -241,6 +244,7 @@
                       <option value="5" {% if rows_per_page == 5 %}selected{% endif %}>5</option>
                       <option value="10" {% if rows_per_page == 10 %}selected{% endif %}>10</option>
                       <option value="20" {% if rows_per_page == 20 %}selected{% endif %}>20</option>
+                      <option value="50" {% if rows_per_page == 50 %}selected{% endif %}>50</option>
                       <option value="All" {% if rows_per_page == "All" %}selected{% endif %}>All</option>
                       <!-- Add more options as needed -->
                     </select>
@@ -315,7 +319,7 @@
                       $('#view-graph-button').click(function() {
                         // Redirect to the dashboard page with the selected row's data
                         var selectedRowId = $('input[name="selected-rows"]:checked').val();
-                        window.location.href = '/dashboard/?id=' + selectedRowId;
+                        window.location.href = '/graph/?id=' + selectedRowId;
                       });
                     });
                     $(document).ready(function() {
@@ -396,7 +400,16 @@
                     cursor: pointer;
                     text-decoration: none;
                 }
-        
+                .btn-primary {
+                    float: right;
+                    margin-right: 4px;
+                    margin-right: 2px;
+                    margin-top: -9px; /* Adjust this value to shift the button upward */
+              }
+               .btn-secondry{
+                    background-color:lightgreen;
+                    margin:4px;
+              }
                 .btn-views:hover {
                     background-color: #45a049;
                 }
@@ -416,7 +429,7 @@
                 .btn-delete:hover {
                     background-color: #c82333;
                 }
-              .panel  table thead {
+                .panel  table thead {
                     position: sticky;
                     top: 89px;
                     z-index: 999;
