@@ -574,3 +574,12 @@ def generate_graph(request):
 
 
 
+#  Here class is defined for char.js
+def Adwords_Dashboard(request):
+    data = AdwordData.objects.all()
+    context = {
+
+        "data":data
+    }
+    return render(request,"Adwords_Dashboard.html",context)
+

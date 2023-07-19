@@ -401,9 +401,7 @@ def Analytic_Dasboard(request):
         # Handle the case when the 'id' parameter is not provided
         return render(request, 'error.html', {'message': 'ID parameter is missing'})
 
-
-
-# With Overlapping
+# without overlapping(Graph using plotly)
 # def Analytics_Dashboard(request):
 #     # Retrieve data from the database
 #     data = AnalyticData.objects.all()
@@ -411,121 +409,70 @@ def Analytic_Dasboard(request):
 #     # Extract values for the required columns
 #     countries = [entry.country for entry in data]
 #     new_users = [entry.country_new_users for entry in data]
-
-#     # Remove commas from new_users values and convert to floats
-#     new_users = [float(val.replace(',', '')) if val else 0.0 for val in new_users]
-
-#     # Sort the data based on the new_users values in ascending order
-#     sorted_data = sorted(zip(new_users, countries))
-#     sorted_new_users, sorted_countries = zip(*sorted_data)
-
-#     # Create the Plotly bar graph
-#     fig = go.Figure()
-#     fig.add_trace(go.Bar(x=sorted_countries, y=sorted_new_users, name='Country New Users',marker=dict(color='green')))
-
-#     # Update axis labels and layout
-#     fig.update_xaxes(title_text='Country')
-#     fig.update_yaxes(title_text='New Users')
-#     fig.update_layout(title='Country New Users')
-#     # Convert the Plotly figure to HTML
-#     graph_html = plot(fig, output_type='div')
-
-#     # return render(request, 'Analytics_Dashboard.html', {'graph_html': graph_html})
-
-# # Graph2
-# # def Analytics_Dashboard(request):
-#     # Retrieve data from the database
-#     # data = AnalyticData.objects.all()
-
-#     # Extract values for the required columns
 #     device_categories = [entry.device_category for entry in data]
 #     device_users = [entry.device_users for entry in data]
 
-#     # Remove commas from device_users values and convert to floats
+#     # Remove commas from new_users and device_users values and convert to floats
+#     new_users = [float(val.replace(',', '')) if val else 0.0 for val in new_users]
 #     device_users = [float(val.replace(',', '')) if val else 0.0 for val in device_users]
 
-#     # Sort the data based on the device_users values in ascending order
-#     sorted_data = sorted(zip(device_users, device_categories))
-#     sorted_device_users, sorted_device_categories = zip(*sorted_data)
+#     # Sort the data based on the new_users values in ascending order
+#     sorted_countries, sorted_new_users = zip(*sorted(zip(countries, new_users)))
+#     # Graph 3
+#     # Extract values for the required columns
+#     search_queries = [entry.search_query for entry in data]
+#     search_clicks = [entry.search_clicks for entry in data]
+#     search_impressions = [entry.search_impressions for entry in data]
 
-#     # Create the Plotly bar graph
+#     # Create the Plotly bar graph for Country New Users
 #     fig1 = go.Figure()
-#     fig1.add_trace(go.Bar(x=sorted_device_categories, y=sorted_device_users, name='Device Users', marker=dict(color='green')))
+#     fig1.add_trace(go.Bar(x=sorted_countries, y=sorted_new_users, name='Country New Users', marker=dict(color='lightgreen')))
+#     fig1.update_xaxes(title_text='Country')
+#     fig1.update_yaxes(title_text='New Users')
+#     fig1.update_layout(title='Country New Users')
+#     graph_html1 = plot(fig1, output_type='div')
 
-#     # Update axis labels and layout
-#     fig1.update_xaxes(title_text='Device Category')
-#     fig1.update_yaxes(title_text='Device Users')
-#     fig1.update_layout(title='Device Users by Category')
+#     # Create the Plotly bar graph for Device Users
+#     fig2 = go.Figure()
+#     fig2.add_trace(go.Bar(x=device_categories, y=device_users, name='Device Users', marker=dict(color='lightgreen')))
+#     fig2.update_xaxes(title_text='Device Category')
+#     fig2.update_yaxes(title_text='Device Users')
+#     fig2.update_layout(title='Device Users by Category')
+#     graph_html2 = plot(fig2, output_type='div')
+
+#      # Create the Plotly figure with subplots
+#     fig3 = make_subplots(specs=[[{"secondary_y": True}]])
+
+#     fig3.add_trace(go.Scatter(x=search_queries, y=search_clicks, name='Search Clicks', mode='lines+markers',
+#                              marker=dict(color='green', size=10, symbol='circle')))
+#     fig3.add_trace(go.Scatter(x=search_queries, y=search_impressions, name='Search Impressions', mode='lines+markers',
+#                              marker=dict(color='blue', size=10, symbol='circle')))
+
+#     fig3.update_layout(title='Search Metrics')
+#     fig3.update_xaxes(title_text='Search Query')
+#     fig3.update_yaxes(title_text='Search Clicks', secondary_y=False)
+#     fig3.update_yaxes(title_text='Search Impressions', secondary_y=True)
+
+#     fig3.update_traces(text=search_clicks, textposition='top center', textfont=dict(color='green'), selector=dict(name='Search Clicks'))
+#     fig3.update_traces(text=search_impressions, textposition='top center', textfont=dict(color='blue'), selector=dict(name='Search Impressions'))
+
+#     # Add lines to the traces
+#     fig3.update_traces(mode='lines+markers', selector=dict(mode='lines+markers'))
 
 #     # Convert the Plotly figure to HTML
-#     graph_html1 = plot(fig1, output_type='div')
-#     return render(request, 'Analytics_Dashboard.html', {'graph_html':graph_html,'graph_html1': graph_html1})
-    # return render(request, 'Analytics_Dashboard.html', {'graph_html2': graph_html2})
+#     graph_html3 = fig3.to_html(full_html=False)
+#     # Convert the Plotly figure to HTML
+#     graph_html3 = plot(fig3, output_type='div')
+#     return render(request, 'Analytics_Dashboard.html', {'graph_html1': graph_html1, 'graph_html2': graph_html2,'graph_html3':graph_html3})
 
-# without overlapping
+#  Here class is defined for char.js
 def Analytics_Dashboard(request):
-    # Retrieve data from the database
     data = AnalyticData.objects.all()
+    context = {
 
-    # Extract values for the required columns
-    countries = [entry.country for entry in data]
-    new_users = [entry.country_new_users for entry in data]
-    device_categories = [entry.device_category for entry in data]
-    device_users = [entry.device_users for entry in data]
-
-    # Remove commas from new_users and device_users values and convert to floats
-    new_users = [float(val.replace(',', '')) if val else 0.0 for val in new_users]
-    device_users = [float(val.replace(',', '')) if val else 0.0 for val in device_users]
-
-    # Sort the data based on the new_users values in ascending order
-    sorted_countries, sorted_new_users = zip(*sorted(zip(countries, new_users)))
-    # Graph 3
-    # Extract values for the required columns
-    search_queries = [entry.search_query for entry in data]
-    search_clicks = [entry.search_clicks for entry in data]
-    search_impressions = [entry.search_impressions for entry in data]
-
-    # Create the Plotly bar graph for Country New Users
-    fig1 = go.Figure()
-    fig1.add_trace(go.Bar(x=sorted_countries, y=sorted_new_users, name='Country New Users', marker=dict(color='lightgreen')))
-    fig1.update_xaxes(title_text='Country')
-    fig1.update_yaxes(title_text='New Users')
-    fig1.update_layout(title='Country New Users')
-    graph_html1 = plot(fig1, output_type='div')
-
-    # Create the Plotly bar graph for Device Users
-    fig2 = go.Figure()
-    fig2.add_trace(go.Bar(x=device_categories, y=device_users, name='Device Users', marker=dict(color='lightgreen')))
-    fig2.update_xaxes(title_text='Device Category')
-    fig2.update_yaxes(title_text='Device Users')
-    fig2.update_layout(title='Device Users by Category')
-    graph_html2 = plot(fig2, output_type='div')
-
-     # Create the Plotly figure with subplots
-    fig3 = make_subplots(specs=[[{"secondary_y": True}]])
-
-    fig3.add_trace(go.Scatter(x=search_queries, y=search_clicks, name='Search Clicks', mode='lines+markers',
-                             marker=dict(color='green', size=10, symbol='circle')))
-    fig3.add_trace(go.Scatter(x=search_queries, y=search_impressions, name='Search Impressions', mode='lines+markers',
-                             marker=dict(color='blue', size=10, symbol='circle')))
-
-    fig3.update_layout(title='Search Metrics')
-    fig3.update_xaxes(title_text='Search Query')
-    fig3.update_yaxes(title_text='Search Clicks', secondary_y=False)
-    fig3.update_yaxes(title_text='Search Impressions', secondary_y=True)
-
-    fig3.update_traces(text=search_clicks, textposition='top center', textfont=dict(color='green'), selector=dict(name='Search Clicks'))
-    fig3.update_traces(text=search_impressions, textposition='top center', textfont=dict(color='blue'), selector=dict(name='Search Impressions'))
-
-    # Add lines to the traces
-    fig3.update_traces(mode='lines+markers', selector=dict(mode='lines+markers'))
-
-    # Convert the Plotly figure to HTML
-    graph_html3 = fig3.to_html(full_html=False)
-    # Convert the Plotly figure to HTML
-    graph_html3 = plot(fig3, output_type='div')
-    return render(request, 'Analytics_Dashboard.html', {'graph_html1': graph_html1, 'graph_html2': graph_html2,'graph_html3':graph_html3})
-
+        "data":data
+    }
+    return render(request,"Analytics_Dashboard(copy).html",context)
 
 
 
