@@ -34,10 +34,12 @@
                       <thead>
                         <tr>
                             <th></th>
+                            
                             <th>Index</th>
+                            <th> Date </>
                             <th>Country</th>
                             <th>Country New Users</th>
-                            <th>Country Benchmark New Users</th>
+                            <th>Country Benchmark Session Users</th>
                             <th>Country Page Sessions</th>
                             <th>Country Avg. Session Duration</th>
                             <th>Country Bounce Rate</th>
@@ -184,6 +186,7 @@
                             <th>Medium Bounce Rate</th>
                             <th>Medium Pages/Session</th>
                             <th>Medium Avg. Session Duration</th>
+                           
                         </tr>
                     </thead>
                         <tbody>
@@ -195,9 +198,10 @@
                                   <input type="checkbox" name="selected-rows" value="{{ row.id }}">
                               </td>
                               <td>{{ page_obj.start_index|add:forloop.counter0 }}</td> <!-- Index number -->
+                                <td>{{ row.g_date }}</td>  
                                 <td>{{ row.country }}</td>
-                                <td>{{ row.country_new_users }}</td>
-                                <td>{{ row.country_benchmark_new_users }}</td>
+                                {% comment %} <td>{{ row.country_new_users }}</td> {% endcomment %}
+                                <td>{{ row.country_users}}</td>
                                 {% comment %} <td>{{ row.country_page_session }}</td> {% endcomment %}
                                 <td>{{ row.country_avg_session_duration }}</td>
                                 <td>{{ row.country_bounce_rate }}</td>
@@ -344,6 +348,9 @@
                                 <td>{{ row.medium_bounce_rate }}</td>
                                 <td>{{ row.medium_pages_session }}</td>
                                 <td>{{ row.medium_avg_session_duration }}</td>
+                               
+                              
+
                             </tr>
                               {% endfor %}
                               {% else %}
@@ -354,10 +361,10 @@
                               </td>
                               <td>{{ page_obj.start_index|add:forloop.counter0 }}</td> <!-- Index number -->
                               {% comment %} <td>{{forloop.counter}}</td> {% endcomment %}
-                              
+                               <td>{{ row.g_date }}</td> 
                               <td>{{ row.country }}</td>
                                 <td>{{ row.country_new_users }}</td>
-                                <td>{{ row.country_benchmark_new_users }}</td>
+                                {% comment %} <td>{{ row.country_users }}</td> {% endcomment %}
                                 {% comment %} <td>{{ row.country_page_session }}</td> {% endcomment %}
                                 <td>{{ row.country_avg_session_duration }}</td>
                                 <td>{{ row.country_bounce_rate }}</td>
@@ -504,6 +511,8 @@
                                 <td>{{ row.medium_bounce_rate }}</td>
                                 <td>{{ row.medium_pages_session }}</td>
                                 <td>{{ row.medium_avg_session_duration }}</td>
+                               
+
                               </tr>
                           </tr>
                           {% endfor %}
@@ -513,7 +522,7 @@
                 </div>
                 <div class="pagination" style="display:block">
                   <div>
-                    <form action="{% url 'ad_page' %}" method="get" class="pagination-form">
+                    <form action="{% url 'analytics_data' %}" method="get" class="pagination-form">
                       <label for="rows" class="pagination-label">Rows per page:</label>
                       <select name="rows" id="rows" onchange="this.form.submit()" class="pagination-select">
                         <option value="5" {% if rows_per_page == 5 %}selected{% endif %}>5</option>

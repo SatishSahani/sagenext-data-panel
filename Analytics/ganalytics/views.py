@@ -1,3 +1,4 @@
+from datetime import datetime
 from django.shortcuts import redirect, render
 from .forms import UploadFileForm
 from django.shortcuts import render
@@ -33,10 +34,12 @@ def analytics_data(request):
         next(csv_data)  # Skip the header row
 
         for row in csv_data:
-            country = row[0]
-            country_new_users = row[1]
-            country_benchmark_new_users = row[2]
-            #country_page_session = row[3]
+            # Assuming 'row' is a list or tuple containing the data.
+
+            g_date = row[0]
+            country = row[1]
+            country_new_users = row[2]
+            # country_users = row[3]
             country_avg_session_duration = row[4]
             country_bounce_rate = row[5]
             country_benchmark_bounce_rate = row[6]
@@ -61,7 +64,6 @@ def analytics_data(request):
             goal_completion_location = row[25]
             goal_completions = row[26]
             page = row[27]
-            #avg_page_load_time = row[28]
             page_per_views = row[29]
             page_bounce_rate = row[30]
             page_exit = row[31]
@@ -117,7 +119,6 @@ def analytics_data(request):
             other_category_avg_session_duration = row[81]
             landing_page = row[82]
             landing_sessions = row[83]
-            #landing_new_session = row[84]
             landing_new_users = row[85]
             landing_bounce_rate = row[86]
             landing_page_session = row[87]
@@ -138,7 +139,6 @@ def analytics_data(request):
             audience_avg_session_duration = row[102]
             browser_bounce_rate = row[103]
             browser_pages_session = row[104]
-            browser_pages_session = row[105]
             default_channel_grouping = row[106]
             default_channel_users = row[107]
             default_channel_new_users = row[108]
@@ -183,11 +183,13 @@ def analytics_data(request):
             medium_bounce_rate = row[147]
             medium_pages_session = row[148]
             medium_avg_session_duration = row[149]
+
             
+
             AnalyticData.objects.create(
                 country=country,
             country_new_users=country_new_users,
-            country_benchmark_new_users=country_benchmark_new_users,
+            # country_users=country_users,
             #country_page_session=country_page_session,
             country_avg_session_duration=country_avg_session_duration,
             country_bounce_rate=country_bounce_rate,
@@ -334,7 +336,8 @@ def analytics_data(request):
             medium_sessions=medium_sessions,
             medium_bounce_rate=medium_bounce_rate,
             medium_pages_session=medium_pages_session,
-            medium_avg_session_duration=medium_avg_session_duration
+            medium_avg_session_duration=medium_avg_session_duration,
+            g_date=g_date
             )
 
         messages.success(request, 'Data uploaded successfully')
@@ -401,69 +404,7 @@ def Analytic_Dasboard(request):
         # Handle the case when the 'id' parameter is not provided
         return render(request, 'error.html', {'message': 'ID parameter is missing'})
 
-# without overlapping(Graph using plotly)
-# def Analytics_Dashboard(request):
-#     # Retrieve data from the database
-#     data = AnalyticData.objects.all()
 
-#     # Extract values for the required columns
-#     countries = [entry.country for entry in data]
-#     new_users = [entry.country_new_users for entry in data]
-#     device_categories = [entry.device_category for entry in data]
-#     device_users = [entry.device_users for entry in data]
-
-#     # Remove commas from new_users and device_users values and convert to floats
-#     new_users = [float(val.replace(',', '')) if val else 0.0 for val in new_users]
-#     device_users = [float(val.replace(',', '')) if val else 0.0 for val in device_users]
-
-#     # Sort the data based on the new_users values in ascending order
-#     sorted_countries, sorted_new_users = zip(*sorted(zip(countries, new_users)))
-#     # Graph 3
-#     # Extract values for the required columns
-#     search_queries = [entry.search_query for entry in data]
-#     search_clicks = [entry.search_clicks for entry in data]
-#     search_impressions = [entry.search_impressions for entry in data]
-
-#     # Create the Plotly bar graph for Country New Users
-#     fig1 = go.Figure()
-#     fig1.add_trace(go.Bar(x=sorted_countries, y=sorted_new_users, name='Country New Users', marker=dict(color='lightgreen')))
-#     fig1.update_xaxes(title_text='Country')
-#     fig1.update_yaxes(title_text='New Users')
-#     fig1.update_layout(title='Country New Users')
-#     graph_html1 = plot(fig1, output_type='div')
-
-#     # Create the Plotly bar graph for Device Users
-#     fig2 = go.Figure()
-#     fig2.add_trace(go.Bar(x=device_categories, y=device_users, name='Device Users', marker=dict(color='lightgreen')))
-#     fig2.update_xaxes(title_text='Device Category')
-#     fig2.update_yaxes(title_text='Device Users')
-#     fig2.update_layout(title='Device Users by Category')
-#     graph_html2 = plot(fig2, output_type='div')
-
-#      # Create the Plotly figure with subplots
-#     fig3 = make_subplots(specs=[[{"secondary_y": True}]])
-
-#     fig3.add_trace(go.Scatter(x=search_queries, y=search_clicks, name='Search Clicks', mode='lines+markers',
-#                              marker=dict(color='green', size=10, symbol='circle')))
-#     fig3.add_trace(go.Scatter(x=search_queries, y=search_impressions, name='Search Impressions', mode='lines+markers',
-#                              marker=dict(color='blue', size=10, symbol='circle')))
-
-#     fig3.update_layout(title='Search Metrics')
-#     fig3.update_xaxes(title_text='Search Query')
-#     fig3.update_yaxes(title_text='Search Clicks', secondary_y=False)
-#     fig3.update_yaxes(title_text='Search Impressions', secondary_y=True)
-
-#     fig3.update_traces(text=search_clicks, textposition='top center', textfont=dict(color='green'), selector=dict(name='Search Clicks'))
-#     fig3.update_traces(text=search_impressions, textposition='top center', textfont=dict(color='blue'), selector=dict(name='Search Impressions'))
-
-#     # Add lines to the traces
-#     fig3.update_traces(mode='lines+markers', selector=dict(mode='lines+markers'))
-
-#     # Convert the Plotly figure to HTML
-#     graph_html3 = fig3.to_html(full_html=False)
-#     # Convert the Plotly figure to HTML
-#     graph_html3 = plot(fig3, output_type='div')
-#     return render(request, 'Analytics_Dashboard.html', {'graph_html1': graph_html1, 'graph_html2': graph_html2,'graph_html3':graph_html3})
 
 #  Here class is defined for char.js
 def Analytics_Dashboard(request):
@@ -474,6 +415,42 @@ def Analytics_Dashboard(request):
     }
     return render(request,"Analytics_Dashboard(copy).html",context)
 
+def Analytics_Dashboard(request):
+    # print("yes")
+    # Retrieve the start_date and end_date from the form submission (if any)
+    try:
+        start_date = request.GET.get('start_date')
+        print("yes1",start_date)
+        end_date = request.GET.get('end_date')       
+        print("yes2",end_date)
+        start_date = datetime.fromisoformat(start_date)
+        # start_date_new = start_date.strftime("%a, %d %b %Y")  # Example: "Thu, 20 Mar 2023"
+        print("yes3",start_date)
+        # end_date = datetime.fromisoformat(end_date)
+        # end_date_new = end_date.strftime("%a, %d %b %Y")
+        print("yes4",end_date)
+        # Filter the data based on the selected date range
+        if start_date and end_date:
+            data = AnalyticData.objects.filter(date__gte=start_date, date__lte=end_date)
+            # data = AdwordData.objects.filter(date__range=(start_date_new, end_date_new))
+            [print(entry.date) for entry in data]
+            [print(start_date == entry.date) for entry in data] 
+            print(start_date) 
+            #[print(type(entry.date)) for entry in data]  
+        else:
+            # If no date range is selected, retrieve all data
+            data = AnalyticData.objects.all()
+            [print(entry.date) for entry in data] 
+            print("satish")      
+           
+    except Exception as e:
+        print(e)
+        data = AnalyticData.objects.all()
+    context = {
+        'data': data
+    }
+
+    return render(request, 'Analytics_Dashboard(copy).html', context)
 
 
 
