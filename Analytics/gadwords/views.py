@@ -19,6 +19,7 @@ from plotly.subplots import make_subplots
 from django.shortcuts import render
 from plotly.offline import plot
 import numpy as np
+from datetime import datetime
 
 
 def ad_page(request):
@@ -215,259 +216,133 @@ def dashboard(request):
 # Graph1 code by satish 6July23
 
 
-def generate_graph(request):
-    # Retrieve data from the database
-    data = AdwordData.objects.all()  # Replace AdwordData with the actual model representing your data
-
-    # Extract values for the required columns
-    campaign_adgroup_names_final = [entry.campaign_adgroup_name for entry in data]
-    campaign_adgroup_names = [item for item in campaign_adgroup_names_final if item != '']
-
-    campaign_costs_final = [entry.campaign_cost for entry in data]
-    campaign_costs = [float(item.replace(',', '')) for item in campaign_costs_final if item != '']
-    # campaign_costs = [float(item) for item in campaign_costs_final if item != '']
-
-    campaign_clicks_final = [entry.campaign_clicks for entry in data]
-    campaign_clicks = [float(item.replace(',', '')) for item in campaign_clicks_final if item != '']
-    #campaign_clicks = [float(item) for item in campaign_clicks_final if item != '']
-
-    campaign_interactions_final = [entry.campaign_interactions for entry in data]
-    campaign_interactions = [float(item.replace(',', '')) for item in campaign_interactions_final if item != '']
-    # campaign_interactions = [float(item) for item in campaign_interactions_final if item != '']
-
-    # Extract values for the required columns for graph1
-    campaign_name_final = [entry.campaign_name for entry in data]
-    campaign_name = [item for item in campaign_name_final if item != '']
-    campaign1_cost_final = [entry.campaign1_cost for entry in data]
-    campaign1_cost = [float(item) for item in campaign1_cost_final if item != '']
-    campaign1_conversions_final = [entry.campaign1_conversions for entry in data]
-    campaign1_conversions = [float(item.replace(',', '')) for item in campaign1_conversions_final if item != '']
-    #campaign1_conversions = [float(item) for item in campaign1_conversions_final if item != '']
-    campaign1_cost_per_conv_final = [entry.campaign1_cost_per_conv for entry in data]
-    campaign1_cost_per_conv = [float(item) for item in campaign1_cost_per_conv_final if item != '']
-
-        # Extract values for the required columns for graph2
-    per_day = [entry.per_day for entry in data]
-    per_day_impression_final = [entry.per_day_impression for entry in data]
-    per_day_impression = [int(item.replace(',', '')) for item in per_day_impression_final if item != '']
-     # Extract values for the required columns
-    devices = [entry.device for entry in data]
-    device_costs = [entry.device_cost for entry in data]
-    device_clicks = [entry.device_clicks for entry in data]
-    device_impressions = [entry.device_impressions for entry in data]
-
-    # Extract values for the required columns
-    devices = [entry.device for entry in data]
-    clicks = [entry.clicks for entry in data]
-    conversions = [entry.conversions for entry in data]
-    cost = [entry.cost for entry in data]
-
-    # Create the Plotly figure
-    fig = make_subplots(specs=[[{"secondary_y": True}]])
-    # Create the Plotly figure
-    fig = go.Figure()
-    fig.add_trace(go.Bar(x=campaign_adgroup_names, y=campaign_costs, name='Campaign Cost'))
-    fig.add_trace(go.Bar(x=campaign_adgroup_names, y=campaign_clicks, name='Campaign Clicks'))
-    fig.add_trace(go.Bar(x=campaign_adgroup_names, y=campaign_interactions, name='Campaign Interactions'))
-
-
-  # Update axis labels
-    fig.update_layout(
-        xaxis_title="Campaign Ad Group Name",
-        yaxis_title="Values",
-        title='Campaign Metrics',
-        barmode='group')
-
-
-    # Add data labels to the bars
-    fig.update_traces(texttemplate='%{y}', textposition='auto')
-
-    # Convert the Plotly figure to HTML
-    graph_html = plot(fig, output_type='div')
-    
-    # graph2
-    # Create the Plotly figure
-    fig1 = go.Figure()
-    fig1.add_trace(go.Bar(x=campaign_name, y=campaign1_cost, name='Campaign Cost'))
-    fig1.add_trace(go.Bar(x=campaign_name, y=campaign1_conversions, name='Campaign Conversions'))
-    fig1.add_trace(go.Bar(x=campaign_name, y=campaign1_cost_per_conv, name='Campaign Cost per Conversion'))
-
-    # Customize the figure layout
-    fig1.update_layout(
-        barmode='group',
-        xaxis_title='campaign_name',
-        yaxis_title='Values',
-        title='Campaign Metrics'
-    )
-
-    # Convert the Plotly figure to HTML
-    graph_html1 = plot(fig1, output_type='div')
-
-    #graph3
-    y_data = list(range(0,max(per_day_impression),50))
-    # Create the Plotly figure
-    # fig = go.Figure()
-    # fig.add_trace(go.Scatter(x=per_day, y=per_day_impression, mode='lines+markers', text=per_day_impression, textposition='top center'))
-# import plotly.graph_objects as go
-
-    fig2 = go.Figure()
-    fig2.add_trace(go.Scatter(
-    x=per_day,
-    # y=per_day_impression,
-    y = y_data,
-    mode='lines+markers',
-    text=per_day_impression,
-    textposition='top center',
-    line=dict(color='green')  # Set the line color to light green
-))
-
-#     fig.update_layout(
-#         plot_bgcolor='darkgreen'  # Set the background color to black
-# )
-    # Customize the figure layout
-    fig2.update_layout(
-        xaxis_title='Week Days',
-        yaxis_title='Impressions',
-        title='Impressions by Week Days'
-    )
-
-    # Convert the Plotly figure to HTML
-    graph_html2 = plot(fig2, output_type='div')
-    # graph 4
-
-    # Create the Plotly figure
-    fig3 = go.Figure()
-    # fig.add_trace(go.Scatter(x=per_day, y=per_day_impression, mode='lines+markers', text=per_day_impression, textposition='top center'))
-# import plotly.graph_objects as go
-
-    fig3 = go.Figure()
-    fig3.add_trace(go.Scatter(
-    x=per_day,
-    y=per_day_impression,
-    mode='lines+markers',
-    text=per_day_impression,
-    textposition='top center',
-    line=dict(color='green')  # Set the line color to light green
-))
-
-#     fig.update_layout(
-#         plot_bgcolor='darkgreen'  # Set the background color to black
-# )
-    # Customize the figure layout
-    fig3.update_layout(
-        xaxis_title='Week Days',
-        yaxis_title='Impressions',
-        title='Impressions by Week Days'
-    )
-    # Convert the Plotly figure to HTML
-    graph_html3 = plot(fig3, output_type='div')
-# graph 4
- # Create the Plotly bar graph
-    fig4 = go.Figure()
-    fig4.add_trace(go.Bar(x=devices, y=device_costs, name='Device Cost', marker=dict(color='green')))
-    fig4.add_trace(go.Bar(x=devices, y=device_clicks, name='Device Clicks', marker=dict(color='blue')))
-    fig4.add_trace(go.Bar(x=devices, y=device_impressions, name='Device Impressions', marker=dict(color='orange')))
-
-    fig4.update_layout(title='Device Metrics')
-    fig4.update_xaxes(title_text='Device')
-    fig4.update_yaxes(title_text='Values')
-
-    # Convert the Plotly figure to HTML
-    graph_html4 = fig.to_html(full_html=False)
-    # Create the Plotly figure
-    fig5 = make_subplots(specs=[[{"secondary_y": True}]])
-
-    # Add the first trace for clicks
-    fig5.add_trace(
-        go.Scatter(
-            x=devices,
-            y=clicks,
-            mode='lines+markers',
-            name='Clicks',
-            marker=dict(symbol='star', size=10),
-            line=dict(color='blue')
-        )
-    )
-
-    # Add the second trace for conversions
-    fig5.add_trace(
-        go.Scatter(
-            x=devices,
-            y=conversions,
-            mode='lines+markers',
-            name='Conversions',
-            marker=dict(symbol='star', size=10),
-            line=dict(color='green')
-        ),
-        secondary_y=False
-    )
-
-    # Add the third trace for cost
-    fig5.add_trace(
-        go.Scatter(
-            x=devices,
-            y=cost,
-            mode='lines+markers',
-            name='Cost',
-            marker=dict(symbol='star', size=10),
-            line=dict(color='red')
-        ),
-        secondary_y=True
-    )
-
-    # Update axis labels and layout
-    fig5.update_xaxes(title_text='Device')
-    fig5.update_yaxes(title_text='Clicks', secondary_y=False)
-    fig5.update_yaxes(title_text='Cost', secondary_y=True)
-    fig5.update_layout(title='Device Metrics')
-     # Convert the Plotly figure to HTML
-    graph_html5 = fig5.to_html(full_html=False)
-    return render(request, 'graph.html', {'graph_html': graph_html,'graph_html1': graph_html1, 'graph_html2': graph_html2,'graph_html3': graph_html3,'graph_html4':graph_html4, 'graph_html5':graph_html5})
-
 # def generate_graph(request):
 #     # Retrieve data from the database
-#     data = AdwordData.objects.all()  # Replace YourModel with the actual model representing your data
+#     data = AdwordData.objects.all()  # Replace AdwordData with the actual model representing your data
 
 #     # Extract values for the required columns
-#     campaign_name = [entry.campaign_name for entry in data]
-#     campaign1_cost = [entry.campaign1_cost for entry in data]
-#     campaign1_conversions = [entry.campaign1_conversions for entry in data]
-#     campaign1_cost_per_conv = [entry.campaign1_cost_per_conv for entry in data]
+#     campaign_adgroup_names_final = [entry.campaign_adgroup_name for entry in data]
+#     campaign_adgroup_names = [item for item in campaign_adgroup_names_final if item != '']
+
+#     campaign_costs_final = [entry.campaign_cost for entry in data]
+#     campaign_costs = [float(item.replace(',', '')) for item in campaign_costs_final if item != '']
+#     # campaign_costs = [float(item) for item in campaign_costs_final if item != '']
+
+#     campaign_clicks_final = [entry.campaign_clicks for entry in data]
+#     campaign_clicks = [float(item.replace(',', '')) for item in campaign_clicks_final if item != '']
+#     #campaign_clicks = [float(item) for item in campaign_clicks_final if item != '']
+
+#     campaign_interactions_final = [entry.campaign_interactions for entry in data]
+#     campaign_interactions = [float(item.replace(',', '')) for item in campaign_interactions_final if item != '']
+#     # campaign_interactions = [float(item) for item in campaign_interactions_final if item != '']
+
+#     # Extract values for the required columns for graph1
+#     campaign_name_final = [entry.campaign_name for entry in data]
+#     campaign_name = [item for item in campaign_name_final if item != '']
+#     campaign1_cost_final = [entry.campaign1_cost for entry in data]
+#     campaign1_cost = [float(item) for item in campaign1_cost_final if item != '']
+#     campaign1_conversions_final = [entry.campaign1_conversions for entry in data]
+#     campaign1_conversions = [float(item.replace(',', '')) for item in campaign1_conversions_final if item != '']
+#     #campaign1_conversions = [float(item) for item in campaign1_conversions_final if item != '']
+#     campaign1_cost_per_conv_final = [entry.campaign1_cost_per_conv for entry in data]
+#     campaign1_cost_per_conv = [float(item) for item in campaign1_cost_per_conv_final if item != '']
+
+#         # Extract values for the required columns for graph2
+#     per_day = [entry.per_day for entry in data]
+#     per_day_impression_final = [entry.per_day_impression for entry in data]
+#     per_day_impression = [int(item.replace(',', '')) for item in per_day_impression_final if item != '']
+#      # Extract values for the required columns
+#     devices = [entry.device for entry in data]
+#     device_costs = [entry.device_cost for entry in data]
+#     device_clicks = [entry.device_clicks for entry in data]
+#     device_impressions = [entry.device_impressions for entry in data]
+
+#     # Extract values for the required columns
+#     devices = [entry.device for entry in data]
+#     clicks = [entry.clicks for entry in data]
+#     conversions = [entry.conversions for entry in data]
+#     cost = [entry.cost for entry in data]
 
 #     # Create the Plotly figure
+#     fig = make_subplots(specs=[[{"secondary_y": True}]])
+#     # Create the Plotly figure
 #     fig = go.Figure()
-#     fig.add_trace(go.Bar(x=campaign_name, y=campaign1_cost, name='Campaign Cost'))
-#     fig.add_trace(go.Bar(x=campaign_name, y=campaign1_conversions, name='Campaign Conversions'))
-#     fig.add_trace(go.Bar(x=campaign_name, y=campaign1_cost_per_conv, name='Campaign Cost per Conversion'))
+#     fig.add_trace(go.Bar(x=campaign_adgroup_names, y=campaign_costs, name='Campaign Cost'))
+#     fig.add_trace(go.Bar(x=campaign_adgroup_names, y=campaign_clicks, name='Campaign Clicks'))
+#     fig.add_trace(go.Bar(x=campaign_adgroup_names, y=campaign_interactions, name='Campaign Interactions'))
+
+
+#   # Update axis labels
+#     fig.update_layout(
+#         xaxis_title="Campaign Ad Group Name",
+#         yaxis_title="Values",
+#         title='Campaign Metrics',
+#         barmode='group')
+
+
+#     # Add data labels to the bars
+#     fig.update_traces(texttemplate='%{y}', textposition='auto')
+
+#     # Convert the Plotly figure to HTML
+#     graph_html = plot(fig, output_type='div')
+    
+#     # graph2
+#     # Create the Plotly figure
+#     fig1 = go.Figure()
+#     fig1.add_trace(go.Bar(x=campaign_name, y=campaign1_cost, name='Campaign Cost'))
+#     fig1.add_trace(go.Bar(x=campaign_name, y=campaign1_conversions, name='Campaign Conversions'))
+#     fig1.add_trace(go.Bar(x=campaign_name, y=campaign1_cost_per_conv, name='Campaign Cost per Conversion'))
 
 #     # Customize the figure layout
-#     fig.update_layout(
+#     fig1.update_layout(
 #         barmode='group',
-#         xaxis_title='Campaign Ad Group Name',
+#         xaxis_title='campaign_name',
 #         yaxis_title='Values',
 #         title='Campaign Metrics'
 #     )
 
 #     # Convert the Plotly figure to HTML
-#     graph_html = plot(fig, output_type='div')
+#     graph_html1 = plot(fig1, output_type='div')
 
-#     return render(request, 'graph.html', {'graph_html': graph_html})
-
-# def generate_graph(request):
-#     # Retrieve data from the database
-#     data = AdwordData.objects.all()  # Replace YourModel with the actual model representing your data
-
-#     # Extract values for the required columns
-#     per_day = [entry.per_day for entry in data]
-#     per_day_impression = [entry.per_day_impression for entry in data]
-
+#     #graph3
+#     y_data = list(range(0,max(per_day_impression),50))
 #     # Create the Plotly figure
-#     fig = go.Figure()
+#     # fig = go.Figure()
 #     # fig.add_trace(go.Scatter(x=per_day, y=per_day_impression, mode='lines+markers', text=per_day_impression, textposition='top center'))
 # # import plotly.graph_objects as go
 
-#     fig = go.Figure()
-#     fig.add_trace(go.Scatter(
+#     fig2 = go.Figure()
+#     fig2.add_trace(go.Scatter(
+#     x=per_day,
+#     # y=per_day_impression,
+#     y = y_data,
+#     mode='lines+markers',
+#     text=per_day_impression,
+#     textposition='top center',
+#     line=dict(color='green')  # Set the line color to light green
+# ))
+
+# #     fig.update_layout(
+# #         plot_bgcolor='darkgreen'  # Set the background color to black
+# # )
+#     # Customize the figure layout
+#     fig2.update_layout(
+#         xaxis_title='Week Days',
+#         yaxis_title='Impressions',
+#         title='Impressions by Week Days'
+#     )
+
+#     # Convert the Plotly figure to HTML
+#     graph_html2 = plot(fig2, output_type='div')
+#     # graph 4
+
+#     # Create the Plotly figure
+#     fig3 = go.Figure()
+#     # fig.add_trace(go.Scatter(x=per_day, y=per_day_impression, mode='lines+markers', text=per_day_impression, textposition='top center'))
+# # import plotly.graph_objects as go
+
+#     fig3 = go.Figure()
+#     fig3.add_trace(go.Scatter(
 #     x=per_day,
 #     y=per_day_impression,
 #     mode='lines+markers',
@@ -480,97 +355,122 @@ def generate_graph(request):
 # #         plot_bgcolor='darkgreen'  # Set the background color to black
 # # )
 #     # Customize the figure layout
-#     fig.update_layout(
+#     fig3.update_layout(
 #         xaxis_title='Week Days',
 #         yaxis_title='Impressions',
 #         title='Impressions by Week Days'
 #     )
+#     # Convert the Plotly figure to HTML
+#     graph_html3 = plot(fig3, output_type='div')
+# # graph 4
+#  # Create the Plotly bar graph
+#     fig4 = go.Figure()
+#     fig4.add_trace(go.Bar(x=devices, y=device_costs, name='Device Cost', marker=dict(color='green')))
+#     fig4.add_trace(go.Bar(x=devices, y=device_clicks, name='Device Clicks', marker=dict(color='blue')))
+#     fig4.add_trace(go.Bar(x=devices, y=device_impressions, name='Device Impressions', marker=dict(color='orange')))
+
+#     fig4.update_layout(title='Device Metrics')
+#     fig4.update_xaxes(title_text='Device')
+#     fig4.update_yaxes(title_text='Values')
 
 #     # Convert the Plotly figure to HTML
-#     graph_html = plot(fig, output_type='div')
+#     graph_html4 = fig.to_html(full_html=False)
+#     # Create the Plotly figure
+#     fig5 = make_subplots(specs=[[{"secondary_y": True}]])
 
-#     return render(request, 'graph.html', {'graph_html': graph_html})
-
-# import plotly.graph_objects as go
-# from django.shortcuts import render
-# from plotly.offline import plot
-
-# def generate_graph(request):
-#     # Retrieve data from the database
-#     data = AdwordData.objects.all()  # Replace YourModel with the actual model representing your data
-
-#     # Extract values for the required columns
-#     dates = [entry.date for entry in data]
-#     costs = [entry.cost for entry in data]
-#     clicks = [entry.clicks for entry in data]
-#     conversions = [entry.conversions for entry in data]
-
-#     # Create the bar graph
-#     fig = go.Figure()
-#     fig.add_trace(go.Bar(x=dates, y=clicks, name='Clicks'))
-    
-#     # Create the line graph
-#     fig.add_trace(go.Scatter(x=dates, y=costs, mode='lines', name='Cost'))
-
-#     # Customize the figure layout
-#     fig.update_layout(
-#         xaxis_title='Date',
-#         yaxis_title='Value',
-#         title='Clicks and Cost by Date',
-#         barmode='group',
-#         yaxis_range=[1, 500]
-#     )
-    
-
-#     # Convert the Plotly figure to HTML
-#     graph_html = plot(fig, output_type='div')
-
-#     return render(request, 'graph.html', {'graph_html': graph_html})
-
-
-
-
-# def generate_graph(request):
-#     # Retrieve data from the database
-#     data = AdwordData.objects.all()  # Replace YourModel with the actual model representing your data
-
-#     # Extract values for the required columns
-#     dates = [entry.date for entry in data]
-#     clicks = [entry.clicks for entry in data]
-#     conversions = [entry.conversions for entry in data]
-
-#     # Calculate the maximum value for y-axis range
-#     max_value = max(max(clicks), max(conversions))
-
-#     # Create the bar graph
-#     fig = go.Figure()
-#     fig.add_trace(go.Bar(x=dates, y=clicks, name='Clicks'))
-
-#     # Create the second y-axis for conversions
-#     fig.update_layout(
-#         yaxis2=dict(
-#             title='Conversions',
-#             overlaying='y',
-#             side='right',
-#             showgrid=False,
-#             range=[0, max_value]
+#     # Add the first trace for clicks
+#     fig5.add_trace(
+#         go.Scatter(
+#             x=devices,
+#             y=clicks,
+#             mode='lines+markers',
+#             name='Clicks',
+#             marker=dict(symbol='star', size=10),
+#             line=dict(color='blue')
 #         )
 #     )
 
-#     # Add the conversions data to the second y-axis
-#     fig.add_trace(go.Bar(x=dates, y=conversions, name='Conversions', yaxis='y2'))
-
-#     # Customize the figure layout
-#     fig.update_layout(
-#         xaxis_title='Date',
-#         title='Clicks and Conversions by Date',
-#         barmode='group'
+#     # Add the second trace for conversions
+#     fig5.add_trace(
+#         go.Scatter(
+#             x=devices,
+#             y=conversions,
+#             mode='lines+markers',
+#             name='Conversions',
+#             marker=dict(symbol='star', size=10),
+#             line=dict(color='green')
+#         ),
+#         secondary_y=False
 #     )
 
-#     # Convert the Plotly figure to HTML
-#     graph_html = plot(fig, output_type='div')
+#     # Add the third trace for cost
+#     fig5.add_trace(
+#         go.Scatter(
+#             x=devices,
+#             y=cost,
+#             mode='lines+markers',
+#             name='Cost',
+#             marker=dict(symbol='star', size=10),
+#             line=dict(color='red')
+#         ),
+#         secondary_y=True
+#     )
 
-#     return render(request, 'graph.html', {'graph_html': graph_html})
+# # Update axis labels and layout
+#     fig5.update_xaxes(title_text='Device')
+#     fig5.update_yaxes(title_text='Clicks', secondary_y=False)
+#     fig5.update_yaxes(title_text='Cost', secondary_y=True)
+#     fig5.update_layout(title='Device Metrics')
+# # Convert the Plotly figure to HTML code 
+#     graph_html5 = fig5.to_html(full_html=False)
+#     return render(request, 'graph.html', {'graph_html': graph_html,'graph_html1': graph_html1, 'graph_html2': graph_html2,'graph_html3': graph_html3,'graph_html4':graph_html4, 'graph_html5':graph_html5})
 
+
+# def Adwords_Dashboard(request):
+#     data = AdwordData.objects.all()
+#     context = {
+
+#         "data":data
+#     }
+    # return render(request,"Adwords_Dashboard.html",context)
+
+# Code For date range selection
+
+def Adwords_Dashboard(request):
+    # print("yes")
+    # Retrieve the start_date and end_date from the form submission (if any)
+    try:
+        start_date = request.GET.get('start_date')
+        print("yes1",start_date)
+        end_date = request.GET.get('end_date')       
+        print("yes2",end_date)
+        start_date = datetime.fromisoformat(start_date)
+        # start_date_new = start_date.strftime("%a, %d %b %Y")  # Example: "Thu, 20 Mar 2023"
+        print("yes3",start_date)
+        # end_date = datetime.fromisoformat(end_date)
+        # end_date_new = end_date.strftime("%a, %d %b %Y")
+        print("yes4",end_date)
+        # Filter the data based on the selected date range
+        if start_date and end_date:
+            data = AdwordData.objects.filter(date__gte=start_date, date__lte=end_date)
+            # data = AdwordData.objects.filter(date__range=(start_date_new, end_date_new))
+            [print(entry.date) for entry in data]
+            [print(start_date == entry.date) for entry in data] 
+            print(start_date) 
+            #[print(type(entry.date)) for entry in data]  
+        else:
+            # If no date range is selected, retrieve all data
+            data = AdwordData.objects.all()
+            [print(entry.date) for entry in data] 
+            print("satish")      
+           
+    except Exception as e:
+        print(e)
+        data = AdwordData.objects.all()
+    context = {
+        'data': data
+    }
+
+    return render(request, 'Adwords_Dashboard.html', context)
 
 

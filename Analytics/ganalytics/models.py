@@ -1,5 +1,5 @@
 from django.db import models
-
+from datetime import datetime
 
 
 # Create your models here.
@@ -11,9 +11,10 @@ from django.db import models
 #     bookings = models.PositiveIntegerField()
 
 class AnalyticData(models.Model):
+    g_date =models.CharField(max_length=100, default='null')                     # update
     country = models.CharField(max_length=100)
     country_new_users = models.CharField(max_length=100)
-    country_benchmark_new_users = models.CharField(max_length=100)
+    # country_users = models.CharField(max_length=100)
     #country_page_session = models.CharField(max_length=100)
     country_avg_session_duration = models.CharField(max_length=100)
     #country_bounce_rate1 = models.CharField(max_length=100)

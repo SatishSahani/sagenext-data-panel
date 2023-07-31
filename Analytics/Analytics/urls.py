@@ -1,8 +1,8 @@
 
 from django.contrib import admin
 from django.urls import path,include
-from ganalytics.views import Analytics_Dashboard
-from gadwords.views import ad_page
+from ganalytics.views import Analytics_Dashboard, Analytic_Dasboard
+from gadwords.views import ad_page,Adwords_Dashboard
 from Meta.views import meta_data
 from ganalytics.views import analytics_data
 from Bookings.views import Bookings_data
@@ -26,6 +26,7 @@ urlpatterns = [
     path('', login_view, name='login'),
     path('dashboard/', dashboard_view, name='dashboard'),
     path('logout/', logout_view, name='logout'),
-    path('Analytics_Dashboard/', Analytics_Dashboard, name='Analytics_Dashboard')
-    
+    path('Analytics_Dashboard/', Analytics_Dashboard, name='Analytics_Dashboard'),
+    path('Analytic_Dasboard/', Analytic_Dasboard, name='Analytic_Dasboard'),
+    path('Adwords_Dashboard/', Adwords_Dashboard, name='Adwords_Dashboard'),
 ]
