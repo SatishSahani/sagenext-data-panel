@@ -440,23 +440,23 @@ def Adwords_Dashboard(request):
     # print("yes")
     # Retrieve the start_date and end_date from the form submission (if any)
     try:
-        start_date = request.GET.get('start_date')
-        print("yes1",start_date)
-        end_date = request.GET.get('end_date')       
-        print("yes2",end_date)
-        start_date = datetime.fromisoformat(start_date)
+        start_g_date = request.GET.get('start_date')
+        print("yes1",start_g_date)
+        end_g_date = request.GET.get('end_date')       
+        print("yes2",end_g_date)
+        start_g_date = datetime.fromisoformat(start_g_date)
         # start_date_new = start_date.strftime("%a, %d %b %Y")  # Example: "Thu, 20 Mar 2023"
-        print("yes3",start_date)
+        # print("yes3",start_date)
         # end_date = datetime.fromisoformat(end_date)
         # end_date_new = end_date.strftime("%a, %d %b %Y")
-        print("yes4",end_date)
+        # print("yes4",end_date)
         # Filter the data based on the selected date range
-        if start_date and end_date:
-            data = AdwordData.objects.filter(date__gte=start_date, date__lte=end_date)
+        if start_g_date and end_g_date:
+            data = AdwordData.objects.filter(date__gte=start_g_date, date__lte=end_g_date)
             # data = AdwordData.objects.filter(date__range=(start_date_new, end_date_new))
-            [print(entry.date) for entry in data]
-            [print(start_date == entry.date) for entry in data] 
-            print(start_date) 
+            # [print(entry.date) for entry in data]
+            # [print(start_date == entry.date) for entry in data] 
+            # print(start_date) 
             #[print(type(entry.date)) for entry in data]  
         else:
             # If no date range is selected, retrieve all data
@@ -471,6 +471,6 @@ def Adwords_Dashboard(request):
         'data': data
     }
 
-    return render(request, 'Adwords_Dashboard.html', context)
+    return render(request, 'Adwords_Dashboard(copy).html', context)
 
 

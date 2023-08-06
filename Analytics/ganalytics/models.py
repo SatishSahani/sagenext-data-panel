@@ -10,15 +10,17 @@ from datetime import datetime
 #     conversions = models.DecimalField(max_digits=10, decimal_places=2)
 #     bookings = models.PositiveIntegerField()
 
-class AnalyticData(models.Model):
-    g_date =models.CharField(max_length=100, default='null')                     # update
+class AnalyticData(models.Model):      
+    
+    g_date =models.CharField(max_length=100, default='null')   # update
+    months =models.CharField(max_length=100, default='null')                    # update
     country = models.CharField(max_length=100)
+    country_users = models.CharField(max_length=100, default='null')  # Adding the 'country_users' field
     country_new_users = models.CharField(max_length=100)
-    # country_users = models.CharField(max_length=100)
-    #country_page_session = models.CharField(max_length=100)
+    # country_page_session = models.CharField(max_length=100)
     country_avg_session_duration = models.CharField(max_length=100)
     #country_bounce_rate1 = models.CharField(max_length=100)
-    country_benchmark_bounce_rate = models.CharField(max_length=100)
+    # country_benchmark_bounce_rate = models.CharField(max_length=100)
     device_category = models.CharField(max_length=100)
     device_users = models.CharField(max_length=100)
     device_new_users = models.CharField(max_length=100)
@@ -153,7 +155,7 @@ class AnalyticData(models.Model):
     mobile_device_avg_session_duration = models.CharField(max_length=100)
     session_duration_bucket = models.CharField(max_length=100)
     bucket_session = models.CharField(max_length=100)
-    bucket_page_views = models.CharField(max_length=100)
+    # bucket_page_views = models.CharField(max_length=100)
     source_medium = models.CharField(max_length=100)
     medium_users = models.CharField(max_length=100)
     medium_new_users = models.CharField(max_length=100)

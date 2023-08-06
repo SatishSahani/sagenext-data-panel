@@ -198,3 +198,64 @@
 
 
 {% endblock content %}
+# for date range
+<!--<form method="get">
+    <div class="form-group row">
+        <label class="form-label col-form-label col-lg-4">Date Range Option</label>
+        <div class="col-lg-8">
+            <select name="date_option" class="form-control">
+                <option value="custom">Custom Date Range</option>
+                <option value="yesterday">Yesterday</option>
+                <option value="one_week">One Week</option>
+                <option value="this_month">This Month</option>
+            </select>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="form-label col-form-label col-lg-4">Start Date</label>
+        <div class="col-lg-8">
+            <input type="date" name="start_date" class="form-control" required>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="form-label col-form-label col-lg-4">End Date</label>
+        <div class="col-lg-8">
+            <input type="date" name="end_date" class="form-control" required>
+        </div>
+    </div>
+    <button type="submit" class="btn btn-primary">Apply Date Range</button>
+</form>
+-->
+
+
+
+<!--from datetime import datetime
+ g_date views.py for analytics_data
+def Analytics_Dashboard(request):
+    try:
+        start_date = request.GET.get('start_date')
+        end_date = request.GET.get('end_date')
+
+        if start_date and end_date:
+            start_date = datetime.fromisoformat(start_date)
+            end_date = datetime.fromisoformat(end_date)
+
+            # Filter the data based on the selected date range using the g_date field
+            data = AnalyticData.objects.filter(g_date__gte=start_date, g_date__lte=end_date)
+        else:
+            # If no date range is selected, retrieve all data
+            data = AnalyticData.objects.all()
+
+        # For testing, print the dates and the data
+        for entry in data:
+            print(entry.g_date)
+
+    except Exception as e:
+        print(e)
+        data = AnalyticData.objects.all()
+
+    context = {
+        'data': data
+    }
+
+    return render(request, 'Analytics_Dashboard.html', context)-->

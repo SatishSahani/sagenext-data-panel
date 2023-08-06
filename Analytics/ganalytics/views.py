@@ -37,12 +37,14 @@ def analytics_data(request):
             # Assuming 'row' is a list or tuple containing the data.
 
             g_date = row[0]
-            country = row[1]
-            country_new_users = row[2]
-            # country_users = row[3]
-            country_avg_session_duration = row[4]
-            country_bounce_rate = row[5]
-            country_benchmark_bounce_rate = row[6]
+            months=row[1]
+            country = row[2]
+            country_users = row[3]
+            country_new_users = row[4]
+            
+            country_avg_session_duration = row[5]
+            country_bounce_rate = row[6]
+            # country_benchmark_bounce_rate = row[6]
             device_category = row[7]
             device_users = row[8]
             device_new_users = row[9]
@@ -187,13 +189,15 @@ def analytics_data(request):
             
 
             AnalyticData.objects.create(
-                country=country,
+            g_date=g_date,
+            months=months,                                      #new 
+            country=country,
+            country_users=country_users,                        #new
             country_new_users=country_new_users,
-            # country_users=country_users,
             #country_page_session=country_page_session,
             country_avg_session_duration=country_avg_session_duration,
             country_bounce_rate=country_bounce_rate,
-            country_benchmark_bounce_rate=country_benchmark_bounce_rate,
+            # country_benchmark_bounce_rate=country_benchmark_bounce_rate,
             device_category=device_category,
             device_users=device_users,
             device_new_users=device_new_users,
@@ -337,7 +341,7 @@ def analytics_data(request):
             medium_bounce_rate=medium_bounce_rate,
             medium_pages_session=medium_pages_session,
             medium_avg_session_duration=medium_avg_session_duration,
-            g_date=g_date
+        
             )
 
         messages.success(request, 'Data uploaded successfully')
@@ -413,45 +417,36 @@ def Analytics_Dashboard(request):
 
         "data":data
     }
-    return render(request,"Analytics_Dashboard(copy).html",context)
+    return render(request,"Analytics_Dashboard.html",context)
 
+
+
+# g_date views.py for analytics_data
 def Analytics_Dashboard(request):
-    # print("yes")
-    # Retrieve the start_date and end_date from the form submission (if any)
     try:
         start_date = request.GET.get('start_date')
-        print("yes1",start_date)
-        end_date = request.GET.get('end_date')       
-        print("yes2",end_date)
-        start_date = datetime.fromisoformat(start_date)
-        # start_date_new = start_date.strftime("%a, %d %b %Y")  # Example: "Thu, 20 Mar 2023"
-        print("yes3",start_date)
-        # end_date = datetime.fromisoformat(end_date)
-        # end_date_new = end_date.strftime("%a, %d %b %Y")
-        print("yes4",end_date)
-        # Filter the data based on the selected date range
+        end_date = request.GET.get('end_date')
+
         if start_date and end_date:
-            data = AnalyticData.objects.filter(date__gte=start_date, date__lte=end_date)
-            # data = AdwordData.objects.filter(date__range=(start_date_new, end_date_new))
-            [print(entry.date) for entry in data]
-            [print(start_date == entry.date) for entry in data] 
-            print(start_date) 
-            #[print(type(entry.date)) for entry in data]  
+            start_date = datetime.fromisoformat(start_date)
+            end_date = datetime.fromisoformat(end_date)
+
+            # Filter the data based on the selected date range using the g_date field
+            data = AnalyticData.objects.filter(g_date__gte=start_date, g_date__lte=end_date)
         else:
             # If no date range is selected, retrieve all data
             data = AnalyticData.objects.all()
-            [print(entry.date) for entry in data] 
-            print("satish")      
-           
+
+        # For testing, print the dates and the data
+        for entry in data:
+            print(entry.g_date)
+
     except Exception as e:
         print(e)
         data = AnalyticData.objects.all()
+
     context = {
         'data': data
     }
 
-    return render(request, 'Analytics_Dashboard(copy).html', context)
-
-
-
-    
+    return render(request, 'Analytics_Dashboard.html', context)

@@ -36,14 +36,16 @@
                             <th></th>
                             
                             <th>Index</th>
-                            <th> Date </>
+                            <th> Date </th>
+                            <th> Months</th>
                             <th>Country</th>
+                            <th> Country Users</th>
                             <th>Country New Users</th>
-                            <th>Country Benchmark Session Users</th>
-                            <th>Country Page Sessions</th>
-                            <th>Country Avg. Session Duration</th>
+                            {% comment %} <th>Country Benchmark Session Users</th> {% endcomment %}
+                             <th>Country Page Sessions</th>
+                            <th>Country Avg. Session Duration</th> 
                             <th>Country Bounce Rate</th>
-                            <th>Country Benchmark Bounce Rate</th>
+                            {% comment %} <th>Country Benchmark Bounce Rate</th> {% endcomment %}
                             <th>Device Category</th>
                             <th>Device Users</th>
                             <th>Device New Users</th>
@@ -198,12 +200,13 @@
                                   <input type="checkbox" name="selected-rows" value="{{ row.id }}">
                               </td>
                               <td>{{ page_obj.start_index|add:forloop.counter0 }}</td> <!-- Index number -->
-                                <td>{{ row.g_date }}</td>  
+                                <td>{{ row.g_date }}</td> 
+                                <td> {{ row.months}}</td>        
                                 <td>{{ row.country }}</td>
-                                {% comment %} <td>{{ row.country_new_users }}</td> {% endcomment %}
                                 <td>{{ row.country_users}}</td>
-                                {% comment %} <td>{{ row.country_page_session }}</td> {% endcomment %}
-                                <td>{{ row.country_avg_session_duration }}</td>
+                                 <td>{{ row.country_new_users }}</td> 
+                               {% comment %} <td>{{ row.country_page_session }}</td>  {% endcomment %}
+                               <td>{{ row.country_avg_session_duration }}</td>
                                 <td>{{ row.country_bounce_rate }}</td>
                                 <td>{{ row.country_benchmark_bounce_rate }}</td>
                                 <td>{{ row.device_category }}</td>
@@ -227,7 +230,7 @@
                                 <td>{{ row.goal_completion_location }}</td>
                                 <td>{{ row.goal_completions }}</td>
                                 <td>{{ row.page }}</td>
-                                {% comment %} <td>{{ row.avg_page_load_time }}</td> {% endcomment %}
+                               <td>{{ row.avg_page_load_time }}</td> 
                                 <td>{{ row.page_per_views }}</td>
                                 <td>{{ row.page_bounce_rate }}</td>
                                 <td>{{ row.page_exit }}</td>
@@ -283,7 +286,7 @@
                                 <td>{{ row.other_category_avg_session_duration }}</td>
                                 <td>{{ row.landing_page }}</td>
                                 <td>{{ row.landing_sessions }}</td>
-                                {% comment %} <td>{{ row.landing_new_session }}</td> {% endcomment %}
+                               <td>{{ row.landing_new_session }}</td> 
                                 <td>{{ row.landing_new_users }}</td>
                                 <td>{{ row.landing_bounce_rate }}</td>
                                 <td>{{ row.landing_page_session }}</td>
@@ -361,10 +364,10 @@
                               </td>
                               <td>{{ page_obj.start_index|add:forloop.counter0 }}</td> <!-- Index number -->
                               {% comment %} <td>{{forloop.counter}}</td> {% endcomment %}
-                               <td>{{ row.g_date }}</td> 
-                              <td>{{ row.country }}</td>
-                                <td>{{ row.country_new_users }}</td>
-                                {% comment %} <td>{{ row.country_users }}</td> {% endcomment %}
+                              <td>{{ row.g_date }}</td> 
+                              <td> {{ row.months}}</td>         <!--Updated-->
+                              <td>{{ row.country }}</td>         
+                              <td>{{ row.country_users}}</td>     <!--Updated -->
                                 {% comment %} <td>{{ row.country_page_session }}</td> {% endcomment %}
                                 <td>{{ row.country_avg_session_duration }}</td>
                                 <td>{{ row.country_bounce_rate }}</td>
@@ -390,7 +393,7 @@
                                 <td>{{ row.goal_completion_location }}</td>
                                 <td>{{ row.goal_completions }}</td>
                                 <td>{{ row.page }}</td>
-                                {% comment %} <td>{{ row.avg_page_load_time }}</td> {% endcomment %}
+                                <th>{{ row.avg_page_load_time }}</td>
                                 <td>{{ row.page_per_views }}</td>
                                 <td>{{ row.page_bounce_rate }}</td>
                                 <td>{{ row.page_exit }}</td>
@@ -446,7 +449,7 @@
                                 <td>{{ row.other_category_avg_session_duration }}</td>
                                 <td>{{ row.landing_page }}</td>
                                 <td>{{ row.landing_sessions }}</td>
-                                {% comment %} <td>{{ row.landing_new_session }}</td> {% endcomment %}
+                                <td>{{ row.landing_new_session }}</td> 
                                 <td>{{ row.landing_new_users }}</td>
                                 <td>{{ row.landing_bounce_rate }}</td>
                                 <td>{{ row.landing_page_session }}</td>
