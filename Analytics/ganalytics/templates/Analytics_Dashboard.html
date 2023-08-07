@@ -191,7 +191,7 @@
                 // Static data for the chart
                 var labels2 = [{% for data in data %}'{{ data.country }}',{% endfor %}];
                 var dataset1 = [{% for data in data %}{{ data.country_new_users }},{% endfor %}];
-                var dataset2 = [{% for data in data %}{{ data.country_avg_session_duration }},{% endfor %}];
+                var dataset2 = [{% for data in data %}{{ data.country_users }},{% endfor %}];
             
                 // Create the chart
                 var ctx2 = document.getElementById('Chart1').getContext('2d');
@@ -209,7 +209,7 @@
                                 yAxisID: 'y-axis-1'
                             },
                             {   type: 'line',
-                                label: 'country_avg_session_duration',
+                                label: 'country_users',
                                 data: dataset2,
                                 backgroundColor: 'rgba(255, 99, 132, 0.2)',
                                 borderColor: 'rgba(255, 99, 132, 1)',
@@ -347,18 +347,18 @@
 
 			// Static data for the chart
 			var labels2 = [{% for data in data %}'{{ data.months }}',{% endfor %}];
-			var dataset1 = [{% for data in data %}{{ data.url_cpc }},{% endfor %}];
-			var dataset2 = [{% for data in data %}{{ data.url_cost }},{% endfor %}];
+			var dataset1 = [{% for data in data %}{{ data.country_users }},{% endfor %}];
+			var dataset2 = [{% for data in data %}{{ data.country_new_users	 }},{% endfor %}];
 		
 			// Create the chart
 			var ctx2 = document.getElementById('Chart3').getContext('2d');
 			var myChart2 = new Chart(ctx2, {
-				type: 'line',
+				type: 'bar',
 				data: {
 					labels: labels2,
 					datasets: [
 						{
-							label: 'language_users',
+							label: 'country_users',
 							data: dataset1,
 							backgroundColor: 'rgba(75, 192, 192, 0.2)',
 							borderColor: 'rgba(75, 192, 192, 1)',
@@ -366,7 +366,7 @@
 							yAxisID: 'y-axis-1'
 						},
 						{   type: 'line',
-							label: 'language_new_users',
+							label: 'country_new_users	',
 							data: dataset2,
 							backgroundColor: 'rgba(255, 99, 132, 0.2)',
 							borderColor: 'rgba(255, 99, 132, 1)',
@@ -396,6 +396,91 @@
 				}
 			});
 		  </script>
+  <!--Graph 4--> 
+  <div class="row">
+    <!-- BEGIN col-8 -->
+    <div class="col-xl-12">
+        <!-- BEGIN panel -->
+        <div class="panel panel-inverse" data-sortable-id="index-1">
+            <div class="panel-heading">
+                <h4 class="panel-title">Website Analytics</h4>
+                <div class="panel-heading-btn">
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-default" data-toggle="panel-expand"><i class="fa fa-expand"></i></a>
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-success" data-toggle="panel-reload"><i class="fa fa-redo"></i></a>
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-warning" data-toggle="panel-collapse"><i class="fa fa-minus"></i></a>
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-danger" data-toggle="panel-remove"><i class="fa fa-times"></i></a>
+                </div>
+            </div>
+            <div class="panel-body pe-1">
+                <canvas id="Chart4" width="400" height="100"></canvas>
+            </div>
+        </div>
+        <script src="https://cdn.canvasjs.com/ga/canvasjs.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script>
+            // Static data for the chart
+            var labels2 = [{% for data in data %}'{{ data.search_query }}',{% endfor %}];
+            var dataset1 = [{% for data in data %}{{ data.search_clicks }},{% endfor %}];
+            var dataset2 = [{% for data in data %}{{ data.search_impressions }},{% endfor %}];
+            var dataset3 = [{% for data in data %}{{ data.search_ctr }},{% endfor %}];
+
+            // Create the chart
+            var ctx2 = document.getElementById('Chart4').getContext('2d');
+            var myChart2 = new Chart(ctx2, {
+                type: 'bar',
+                data: {
+                    labels: labels2,
+                    datasets: [
+                        {
+                            label: 'Search Clicks',
+                            data: dataset1,
+                            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                            borderColor: 'rgba(75, 192, 192, 1)',
+                            borderWidth: 3,
+                            yAxisID: 'y-axis-1',
+                        },
+                        {
+                            label: 'Search Impressions',
+                            data: dataset2,
+                            backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                            borderColor: 'rgba(255, 99, 132, 1)',
+                            borderWidth: 3,
+                            yAxisID: 'y-axis-1',
+                        },
+                        {
+                            label: 'Search CTR',
+                            data: dataset3,
+                            backgroundColor: 'rgba(255, 159, 64, 0.2)',
+                            borderColor: 'rgba(255, 159, 64, 1)',
+                            borderWidth: 3,
+                            yAxisID: 'y-axis-2',
+                        },
+                    ],
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: [
+                            {
+                                type: 'linear',
+                                display: true,
+                                position: 'left',
+                                id: 'y-axis-1',
+                            },
+                            {
+                                type: 'linear',
+                                display: true,
+                                position: 'right',
+                                id: 'y-axis-2',
+                            },
+                        ],
+                    },
+                },
+            });
+        </script>
+<!--Graph-5-->
+
+      
  <!-- changes in code here 20july-->  
                     
                       
