@@ -236,7 +236,7 @@ def Adwords_Dashboard(request):
             # data = AdwordData.objects.filter(date__range=(start_date_new, end_date_new))
             # [print(entry.date) for entry in data]
             # [print(start_date == entry.date) for entry in data] 
-            # print(start_date) 
+            # print(start_date) cd
             #[print(type(entry.date)) for entry in data]  
         else:
             # If no date range is selected, retrieve all data
