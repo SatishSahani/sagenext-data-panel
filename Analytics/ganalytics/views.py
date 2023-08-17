@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 from django.shortcuts import redirect, render
 from .forms import UploadFileForm
 from django.shortcuts import render
@@ -427,16 +427,14 @@ def Analytics_Dashboard(request):
         if start_date and end_date:
             start_date = datetime.fromisoformat(start_date)
             end_date = datetime.fromisoformat(end_date)
-
-            # Filter the data based on the selected date range using the g_date field
-            data = AnalyticData.objects.filter(g_date__gte=start_date, g_date__lte=end_date)
         else:
-            # If no date range is selected, retrieve all data
-            data = AnalyticData.objects.all()
-
-        # For testing, print the dates and the data
-        for entry in data:
-            print(entry.g_date)
+            # Calculate default date range for the current month
+            today = datetime.today()
+            start_date = today.replace(day=1)
+            end_date = (start_date.replace(month=start_date.month % 12 + 1) - timedelta(days=1)).replace(hour=23, minute=59, second=59)
+            
+        # Filter the data based on the selected date range using the g_date field
+        data = AnalyticData.objects.filter(g_date__gte=start_date, g_date__lte=end_date)
 
     except Exception as e:
         print(e)
@@ -447,3 +445,4 @@ def Analytics_Dashboard(request):
     }
 
     return render(request, 'Analytics_Dashboard.html', context)
+# the code working properly when i select date it shows that data anmd by default it show current months data

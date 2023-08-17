@@ -224,7 +224,7 @@ def Adwords_Dashboard(request):
         print("yes1",start_g_date)
         end_g_date = request.GET.get('end_date')       
         print("yes2",end_g_date)
-        start_g_date = datetime.fromisoformat(start_g_date)
+        # start_g_date = datetime.fromisoformat(start_g_date)
         # start_date_new = start_date.strftime("%a, %d %b %Y")  # Example: "Thu, 20 Mar 2023"
         # print("yes3",start_date)
         # end_date = datetime.fromisoformat(end_date)
