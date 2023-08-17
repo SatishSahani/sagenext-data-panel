@@ -259,3 +259,528 @@ def Analytics_Dashboard(request):
     }
 
     return render(request, 'Analytics_Dashboard.html', context)-->
+
+
+    <!-- Add this form to capture the date range --> 
+    <!--for analytics
+<form method="get">
+    <div class="form-group row mb-3">
+        <label class="form-label col-form-label col-md-2">Start Date :</label>
+        <div class="col-md-3">
+            <input type="date" name="start_date" class="form-control" required>
+        </div>
+        <label class="form-label col-form-label col-md-2">End Date :</label>
+        <div class="col-md-3">
+            <input type="date" name="end_date" class="form-control" required>
+        </div>
+        <div class="form-group col-md-2">
+                <button type="submit" class="btn btn-primary btn-block">Apply Date Range</button>
+        </div>
+    </div>
+</form>
+
+
+16-8-23
+<--Backup code for Analytics
+//  Graph-1
+    
+                // Static data for the chart
+                var labels2 = [{% for data in data %}'{{ data.country }}',{% endfor %}];
+                var dataset1 = [{% for data in data %}{{ data.country_new_users }},{% endfor %}];
+                var dataset2 = [{% for data in data %}{{ data.country_users }},{% endfor %}];
+            
+                // Create the chart
+                var ctx2 = document.getElementById('Chart1').getContext('2d');
+                var myChart2 = new Chart(ctx2, {
+                    type: 'bar',
+                    data: {
+                        labels: labels2,
+                        datasets: [
+                            {
+                                label: 'New Users',
+                                data: dataset1,
+                                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                                borderColor: 'rgba(75, 192, 192, 1)',
+                                borderWidth: 3,
+                               
+                            },
+                            {   type: 'bar',
+                                label: 'Users',
+                                data: dataset2,
+                                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                                borderColor: 'rgba(255, 99, 132, 1)',
+                                borderWidth: 3,
+                                
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                            y: [
+                                {
+                                    type: 'linear',
+                                    display: true,
+                                    position: 'left',
+                                    id: 'y-axis-2'
+                                }
+                               
+                            ]
+                        }
+                    }
+                });
+              </script>
+              
+
+
+<!- Graph-2--> 
+<!-- END row -->
+<div class="row">
+	<!-- BEGIN col-8 -->
+	<div class="col-xl-12">
+		<!-- BEGIN panel -->
+		<div class="panel panel-inverse" data-sortable-id="index-1">
+			<div class="panel-heading">
+				<h4 class="panel-title">Graph of Hour Vs New Users / Users </h4>
+				<div class="panel-heading-btn">
+					<a href="javascript:;" class="btn btn-xs btn-icon btn-default" data-toggle="panel-expand"><i class="fa fa-expand"></i></a>
+					<a href="javascript:;" class="btn btn-xs btn-icon btn-success" data-toggle="panel-reload"><i class="fa fa-redo"></i></a>
+					<a href="javascript:;" class="btn btn-xs btn-icon btn-warning" data-toggle="panel-collapse"><i class="fa fa-minus"></i></a>
+					<a href="javascript:;" class="btn btn-xs btn-icon btn-danger" data-toggle="panel-remove"><i class="fa fa-times"></i></a>
+				</div>
+			</div>
+			<div class="panel-body pe-1">
+				<canvas id="Chart2" width="400" height="100"></canvas>
+			</div>
+		</div> 
+		<script src="https://cdn.canvasjs.com/ga/canvasjs.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+		<script>
+
+//  Graph-2
+
+			// Static data for the chart
+			var labels2 = [{% for data in data %}'{{ data.per_hour }}',{% endfor %}];
+			var dataset1 = [{% for data in data %}{{ data.per_hour_new_users }},{% endfor %}];
+			var dataset2 = [{% for data in data %}{{ data.per_hour_sessions }},{% endfor %}];
+		
+			// Create the chart
+			var ctx2 = document.getElementById('Chart2').getContext('2d');
+			var myChart2 = new Chart(ctx2, {
+				type: 'line',
+				data: {
+					labels: labels2,
+					datasets: [
+						{
+							label: 'New Users',
+							data: dataset1,
+							backgroundColor: 'rgba(75, 192, 192, 0.2)',
+							borderColor: 'rgba(75, 192, 192, 1)',
+							borderWidth: 3,
+							
+						},
+						{   type: 'line',
+							label: 'Users',
+							data: dataset2,
+							backgroundColor: 'rgba(255, 99, 132, 0.2)',
+							borderColor: 'rgba(255, 99, 132, 1)',
+							borderWidth: 3,
+							
+						}
+					]
+				},
+				options: {
+					responsive: true,
+					scales: {
+						y: [
+							{
+								type: 'linear',
+								display: true,
+								position: 'left',
+								id: 'y-axis-1'
+							},
+							{
+								type: 'linear',
+								display: true,
+								position: 'right',
+								id: 'y-axis-2'
+							}
+						]
+					}
+				}
+			});
+		  </script>
+                     
+<!--Graph-3-->
+<!-- END row -->
+<div class="row">
+	<!-- BEGIN col-8 -->
+	<div class="col-xl-12">
+		<!-- BEGIN panel -->
+		<div class="panel panel-inverse" data-sortable-id="index-1">
+			<div class="panel-heading">
+				<h4 class="panel-title">Graph of Mobile Device Vs Device Sessions / Device Sessions</h4>
+				<div class="panel-heading-btn">
+					<a href="javascript:;" class="btn btn-xs btn-icon btn-default" data-toggle="panel-expand"><i class="fa fa-expand"></i></a>
+					<a href="javascript:;" class="btn btn-xs btn-icon btn-success" data-toggle="panel-reload"><i class="fa fa-redo"></i></a>
+					<a href="javascript:;" class="btn btn-xs btn-icon btn-warning" data-toggle="panel-collapse"><i class="fa fa-minus"></i></a>
+					<a href="javascript:;" class="btn btn-xs btn-icon btn-danger" data-toggle="panel-remove"><i class="fa fa-times"></i></a>
+				</div>
+			</div>
+			<div class="panel-body pe-1">
+				<canvas id="Chart3" width="400" height="100"></canvas>
+			</div>
+		</div> 
+		<script src="https://cdn.canvasjs.com/ga/canvasjs.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+		<script>
+
+
+			// Static data for the chart
+			var labels2 = [{% for data in data %}'{{ data.mobile_device_users }}',{% endfor %}];
+			var dataset1 = [{% for data in data %}{{ data.mobile_device_new_users }},{% endfor %}];
+			var dataset2 = [{% for data in data %}{{ data.mobile_device_sessions	 }},{% endfor %}];
+		
+			// Create the chart
+			var ctx2 = document.getElementById('Chart3').getContext('2d');
+			var myChart2 = new Chart(ctx2, {
+				type: 'bar',
+				data: {
+					labels: labels2,
+					datasets: [
+						{
+							label: 'Device New Users',
+							data: dataset1,
+							backgroundColor: 'rgba(75, 192, 192, 0.2)',
+							borderColor: 'rgba(75, 192, 192, 1)',
+							borderWidth: 3,
+							
+						},
+						{   type: 'bar',
+							label: 'Device Sessions	',
+							data: dataset2,
+							backgroundColor: 'rgba(255, 99, 132, 0.2)',
+							borderColor: 'rgba(255, 99, 132, 1)',
+							borderWidth: 3,
+							
+						}
+					]
+				},
+				options: {
+					responsive: true,
+					scales: {
+						y: [
+							{
+								type: 'linear',
+								display: true,
+								position: 'left',
+								id: 'y-axis-1'
+							},
+							{
+								type: 'linear',
+								display: true,
+								position: 'right',
+								id: 'y-axis-2'
+							}
+						]
+					}
+				}
+			});
+		  </script>
+  <!--Graph 4--> 
+  <div class="row">
+    <!-- BEGIN col-8 -->
+    <div class="col-xl-12">
+        <!-- BEGIN panel -->
+        <div class="panel panel-inverse" data-sortable-id="index-1">
+            <div class="panel-heading">
+                <h4 class="panel-title">Graph of Search Query Vs Search Clicks / Search Impressions /Search CTR</h4>
+                <div class="panel-heading-btn">
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-default" data-toggle="panel-expand"><i class="fa fa-expand"></i></a>
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-success" data-toggle="panel-reload"><i class="fa fa-redo"></i></a>
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-warning" data-toggle="panel-collapse"><i class="fa fa-minus"></i></a>
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-danger" data-toggle="panel-remove"><i class="fa fa-times"></i></a>
+                </div>
+            </div>
+            <div class="panel-body pe-1">
+                <canvas id="Chart4" width="400" height="100"></canvas>
+            </div>
+        
+        </div>
+        <script src="https://cdn.canvasjs.com/ga/canvasjs.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script>
+            // Static data for the chart
+            var labels2 = [{% for data in data %}'{{ data.search_query }}',{% endfor %}];
+            var dataset1 = [{% for data in data %}{{ data.search_clicks }},{% endfor %}];
+            var dataset2 = [{% for data in data %}{{ data.search_impressions }},{% endfor %}];
+            var dataset3 = [{% for data in data %}{{ data.search_ctr }},{% endfor %}];
+
+            // Create the chart
+            var ctx2 = document.getElementById('Chart4').getContext('2d');
+            var myChart2 = new Chart(ctx2, {
+                type: 'bar',
+                data: {
+                    labels: labels2,
+                    datasets: [
+                        {
+                            label: 'Search Clicks',
+                            data: dataset1,
+                            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                            borderColor: 'rgba(75, 192, 192, 1)',
+                            borderWidth: 3,
+                            
+                        },
+                        {
+                            label: 'Search Impressions',
+                            data: dataset2,
+                            backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                            borderColor: 'rgba(255, 99, 132, 1)',
+                            borderWidth: 3,
+                            
+                        },
+                        {
+                            label: 'Search CTR',
+                            data: dataset3,
+                            backgroundColor: 'rgba(255, 159, 64, 0.2)',
+                            borderColor: 'rgba(255, 159, 64, 1)',
+                            borderWidth: 3,
+                            
+                        },
+                    ],
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: [
+                            {
+                                type: 'linear',
+                                display: true,
+                                position: 'left',
+                                id: 'y-axis-1',
+                            },
+                            {
+                                type: 'linear',
+                                display: true,
+                                position: 'right',
+                                id: 'y-axis-2',
+                            },
+                        ],
+                    },
+                },
+            });
+        </script>
+<!--Graph-5-->
+     
+<div class="row">
+    <!-- BEGIN col-8 -->
+    <div class="col-xl-12">
+        <!-- BEGIN panel -->
+        <div class="panel panel-inverse" data-sortable-id="index-1">
+            <div class="panel-heading">
+                <h4 class="panel-title">Google Analytics</h4>
+                <div class="panel-heading-btn">
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-default" data-toggle="panel-expand"><i class="fa fa-expand"></i></a>
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-success" data-toggle="panel-reload"><i class="fa fa-redo"></i></a>
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-warning" data-toggle="panel-collapse"><i class="fa fa-minus"></i></a>
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-danger" data-toggle="panel-remove"><i class="fa fa-times"></i></a>
+                </div>
+            </div>
+            <div class="panel-body pe-1">
+                <canvas id="Chart5" width="400" height="100"></canvas>
+            </div>
+        
+        </div>
+        <script src="https://cdn.canvasjs.com/ga/canvasjs.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script>
+            // Static data for the chart
+            var labels2 = [{% for data in data %}'{{ data.page }}',{% endfor %}];
+            var dataset1 = [{% for data in data %}{{ data.page_per_views }},{% endfor %}];
+            //var dataset2 = [{% for data in data %}{{ data.search_impressions }},{% endfor %}];
+           // var dataset3 = [{% for data in data %}{{ data.search_ctr }},{% endfor %}];
+
+            // Create the chart
+            var ctx2 = document.getElementById('Chart5').getContext('2d');
+            var myChart2 = new Chart(ctx2, {
+                type: 'bar',
+                data: {
+                    labels: labels2,
+                    datasets: [
+                        {
+                            label: 'page_per_views',
+                            data: dataset1,
+                            backgroundColor: 'rgba(255, 159, 64, 0.2)',
+                            borderColor: 'rgba(255, 159, 64, 1)',
+                            borderWidth: 3,
+                            yAxisID: 'y-axis-2',
+                        },
+                        
+                    ],
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: [
+                            {
+                                type: 'linear',
+                                display: true,
+                                position: 'left',
+                                id: 'y-axis-1',
+                            },
+                            {
+                                type: 'linear',
+                                display: true,
+                                position: 'right',
+                                id: 'y-axis-2',
+                            },
+                        ],
+                    },
+                },
+            });
+        </script> 
+    <!--Graph-6-->
+    <div class="row">
+        <!-- BEGIN col-8 -->
+        <div class="col-xl-12">
+            <!-- BEGIN panel -->
+            <div class="panel panel-inverse" data-sortable-id="index-1">
+                <div class="panel-heading">
+                    <h4 class="panel-title">Google Analytics</h4>
+                    <div class="panel-heading-btn">
+                        <a href="javascript:;" class="btn btn-xs btn-icon btn-default" data-toggle="panel-expand"><i class="fa fa-expand"></i></a>
+                        <a href="javascript:;" class="btn btn-xs btn-icon btn-success" data-toggle="panel-reload"><i class="fa fa-redo"></i></a>
+                        <a href="javascript:;" class="btn btn-xs btn-icon btn-warning" data-toggle="panel-collapse"><i class="fa fa-minus"></i></a>
+                        <a href="javascript:;" class="btn btn-xs btn-icon btn-danger" data-toggle="panel-remove"><i class="fa fa-times"></i></a>
+                    </div>
+                </div>
+                <div class="panel-body pe-1">
+                    <canvas id="Chart6" width="400" height="100"></canvas>
+                </div>
+            
+            </div>
+            <script src="https://cdn.canvasjs.com/ga/canvasjs.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+            <script>
+                // Static data for the chart
+                var labels2 = [{% for data in data %}'{{ data.goal_completion_location }}',{% endfor %}];
+                var dataset1 = [{% for data in data %}{{ data.goal_completions }},{% endfor %}];
+                //var dataset2 = [{% for data in data %}{{ data.search_impressions }},{% endfor %}];
+                //var dataset3 = [{% for data in data %}{{ data.search_ctr }},{% endfor %}];
+    
+                // Create the chart
+                var ctx2 = document.getElementById('Chart6').getContext('2d');
+                var myChart2 = new Chart(ctx2, {
+                    type: 'bar',
+                    data: {
+                        labels: labels2,
+                        datasets: [
+                            {
+                                label: 'goal_completions',
+                                data: dataset1,
+                                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                                borderColor: 'rgba(75, 192, 192, 1)',
+                                borderWidth: 3,
+                                yAxisID: 'y-axis-1',
+                            },
+                            
+                        ],
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                            y: [
+                                {
+                                    type: 'linear',
+                                    display: true,
+                                    position: 'left',
+                                    id: 'y-axis-1',
+                                },
+                                {
+                                    type: 'linear',
+                                    display: true,
+                                    position: 'right',
+                                    id: 'y-axis-2',
+                                },
+                            ],
+                        },
+                    },
+                });
+            </script>  
+<!--Graph-7-->
+<div class="row">
+    <!-- BEGIN col-8 -->
+    <div class="col-xl-12">
+        <!-- BEGIN panel -->
+        <div class="panel panel-inverse" data-sortable-id="index-1">
+            <div class="panel-heading">
+                <h4 class="panel-title">Graph of Affinity Category Vs Users Reach /  Sessions Reach</h4>
+                <div class="panel-heading-btn">
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-default" data-toggle="panel-expand"><i class="fa fa-expand"></i></a>
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-success" data-toggle="panel-reload"><i class="fa fa-redo"></i></a>
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-warning" data-toggle="panel-collapse"><i class="fa fa-minus"></i></a>
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-danger" data-toggle="panel-remove"><i class="fa fa-times"></i></a>
+                </div>
+            </div>
+            <div class="panel-body pe-1">
+                <canvas id="Chart7" width="400" height="100"></canvas>
+            </div>
+        </div> 
+        <script src="https://cdn.canvasjs.com/ga/canvasjs.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script>
+
+//  Graph-7
+
+            // Static data for the chart
+            var labels2 = [{% for data in data %}'{{ data.affinity_category_reach }}',{% endfor %}];
+            var dataset1 = [{% for data in data %}{{ data.users_reach }},{% endfor %}];
+            var dataset2 = [{% for data in data %}{{ data.sessions_reach }},{% endfor %}];
+        
+            // Create the chart
+            var ctx2 = document.getElementById('Chart7').getContext('2d');
+            var myChart2 = new Chart(ctx2, {
+                type: 'bar',
+                data: {
+                    labels: labels2,
+                    datasets: [
+                        {
+                            label: 'Users Reach',
+                            data: dataset1,
+                            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                            borderColor: 'rgba(75, 192, 192, 1)',
+                            borderWidth: 3,
+                            
+                        },
+                        {   type: 'bar',
+                            label: 'Sessions Reach',
+                            data: dataset2,
+                            backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                            borderColor: 'rgba(255, 99, 132, 1)',
+                            borderWidth: 3,
+                            
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: [
+                            {
+                                type: 'linear',
+                                display: true,
+                                position: 'left',
+                                id: 'y-axis-1'
+                            },
+                            {
+                                type: 'linear',
+                                display: true,
+                                position: 'right',
+                                id: 'y-axis-2'
+                            }
+                        ]
+                    }
+                }
+            });
+          </script>
+{% endblock content %}    -->
