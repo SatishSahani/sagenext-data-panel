@@ -1,31 +1,13 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.en.min.js"></script>
+
 {% extends "dashboard.html" %}
 {% load static %}
 {% block content %}
-<div class="col-3">
-    <form class="form-horizontal form-bordered">
-         <div class="form-group row">
 
 
-            
-            {% comment %} <label class="form-label col-form-label col-lg-4">Default Date Ranges</label>  {% endcomment %}
-            <!-- <div class="col-lg-8">
-                <div class="input-group" id="default-daterange">
-                    {% comment %} <input type="text" name="default-daterange" class="form-control" value="" placeholder="click to select the date range"> {% endcomment %}
-                    {% comment %} <div class="input-group-text"><i class="fa fa-calendar"></i></div> {% endcomment %}
-                </div> 
-             </div>-->
-        </div> 
-       <!-- <div class="form-group row">
-            <label class="form-label col-form-label col-lg-4">Advance Date Ranges</label>
-            <div class="col-lg-8">
-                <div id="advance-daterange" class="btn btn-default d-flex text-start align-items-center">
-                    <span class="flex-1">Jan 24, 2012 - June 22, 2023</span>
-                    <i class="fa fa-caret-down"></i>
-                </div>
-            </div>
-        </div>>-->
-    </form>
-</div>
 <div class="row">
     <!-- BEGIN col-3 -->
     <div class="col-xl-3 col-md-6">
@@ -84,25 +66,101 @@
         </div>
     </div>
     <!-- END col-3 -->
-
-    <!-- Custom Date -->
+</div>
 <!-- Add this form to capture the date range -->
-<form method="get">
-    <div class="form-group row mb-3">
-        <label class="form-label col-form-label col-md-2">Start Date :</label>
-        <div class="col-md-3">
-            <input type="date" name="start_date" class="form-control" required>
+<div class="filter">
+    <div class="row">
+        <div class="col-3" onload="selectDateRange('last_30_days')" style="display:inline;justify-content:space-between;">
+            <select id="date_range_options" class="form-control" onchange="selectDateRange(this.value)" s>
+                <option >Select Date</option>
+                <option value="today">Today</option>
+                <option value="last_day">Yesterday</option>
+                <option value="last_7_days">Last 7 Days</option>
+                <option value="last_30_days">Last 30 Days</option>
+                <option value="this_month">This Month</option>
+                <option value="previous_month">Last Month</option>  
+            </select>
         </div>
-        <label class="form-label col-form-label col-md-2">End Date :</label>
-        <div class="col-md-3">
-            <input type="date" name="end_date" class="form-control" required>
+        <div class="col-3">
+            <input type="date" class="form-control" id="start_date">
         </div>
-        <div class="form-group col-md-2">
-                <button type="submit" class="btn btn-primary btn-block">Apply Date Range</button>
+        <div class="col-3">
+            <input type="date" class="form-control"  id="end_date">
         </div>
+        <div class="col-3">
+            <button onclick="applyDateRange()" style="padding-button:10px; width: 100%">Apply Date Range</button>
+        </div>
+            <script>
+            function applyDateRange() {
+                var startDate = document.getElementById("start_date").value;
+                var endDate = document.getElementById("end_date").value;
+        
+                // Redirect to the Django analytics function with start and end dates
+                window.location.href = "/Analytics_Dashboard/?start_date=" + startDate + "&end_date=" + endDate;
+            }
+            
+            function selectDateRange(option) {
+                var today = new Date();
+                var startDate = new Date();
+                var endDate = new Date();
+                
+                if (option === "last_day") {
+                    startDate.setDate(today.getDate() - 1);
+                } else if (option === "last_30_days") {
+                    startDate.setDate(today.getDate() - 30);
+                } else if (option === "previous_month") {
+                    startDate.setMonth(today.getMonth() - 1);
+                    startDate.setDate(1);
+                    endDate.setDate(0);
+                } else if (option === "this_month") {
+                    startDate.setDate(1);
+                }else if (option === "last_7_days") {
+                    startDate.setDate(today.getDate() - 7);
+                }else if (option === "today") {
+                    startDate.setDate(today.getDate());
+                }
+                document.getElementById("start_date").valueAsDate = startDate;
+                document.getElementById("end_date").valueAsDate = endDate;
+            }
+            </script>
+            <style>
+                body {
+                    font-family: Arial, sans-serif;
+                }
+                
+                /* Style for the date range options select element */
+                #date_range_options {
+                    font-size: 16px;
+                    padding: 5px;
+                    margin-bottom: 10px;
+                }
+                
+                /* Style for the date input fields */
+                input[type="date"] {
+                    font-size: 16px;
+                    padding: 5px;
+                    border: 1px solid #ccc;
+                    border-radius: 5px;
+                }
+                
+                /* Style for the apply button */
+                button {
+                    font-size: 16px;
+                    padding: 5px 20px;
+                    background-color: lightgreen;
+                    color: black;
+                    border: none;
+                    border-radius: 5px;
+                    cursor: pointer;
+                }
+                
+                /* Change button color when hovered */
+                button:hover {
+                    background-color: ;
+                }
+            </style>
     </div>
-</form>
-
+</div>
 
 <!--Graph Started here-->
     <!-- END row -->
@@ -127,14 +185,11 @@
             <script src="https://cdn.canvasjs.com/ga/canvasjs.min.js"></script>
             <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
             <script>
-    
-    //  Graph-1
-    
+                //  Graph-1
                 // Static data for the chart
                 var labels2 = [{% for data in data %}'{{ data.country }}',{% endfor %}];
                 var dataset1 = [{% for data in data %}{{ data.country_new_users }},{% endfor %}];
                 var dataset2 = [{% for data in data %}{{ data.country_users }},{% endfor %}];
-            
                 // Create the chart
                 var ctx2 = document.getElementById('Chart1').getContext('2d');
                 var myChart2 = new Chart(ctx2, {
@@ -176,9 +231,6 @@
                     }
                 });
               </script>
-              
-
-
 <!-- Graph-2--> 
 <!-- END row -->
 <div class="row">
@@ -202,8 +254,7 @@
 		<script src="https://cdn.canvasjs.com/ga/canvasjs.min.js"></script>
 		<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 		<script>
-
-//  Graph-2
+            //  Graph-2
 
 			// Static data for the chart
 			var labels2 = [{% for data in data %}'{{ data.per_hour }}',{% endfor %}];
@@ -333,8 +384,9 @@
 				}
 			});
 		  </script>
-  <!--Graph 4--> 
-  <div class="row">
+
+<!--Graph 4--> 
+<div class="row">
     <!-- BEGIN col-8 -->
     <div class="col-xl-12">
         <!-- BEGIN panel -->
@@ -416,15 +468,15 @@
                 },
             });
         </script>
-<!--Graph-5-->
-     
+
+<!--Graph-5-->    
 <div class="row">
     <!-- BEGIN col-8 -->
     <div class="col-xl-12">
         <!-- BEGIN panel -->
         <div class="panel panel-inverse" data-sortable-id="index-1">
             <div class="panel-heading">
-                <h4 class="panel-title">Google Analytics</h4>
+                <h4 class="panel-title">Graph of Page Vs Page Views</h4>
                 <div class="panel-heading-btn">
                     <a href="javascript:;" class="btn btn-xs btn-icon btn-default" data-toggle="panel-expand"><i class="fa fa-expand"></i></a>
                     <a href="javascript:;" class="btn btn-xs btn-icon btn-success" data-toggle="panel-reload"><i class="fa fa-redo"></i></a>
@@ -454,7 +506,7 @@
                     labels: labels2,
                     datasets: [
                         {
-                            label: 'page_per_views',
+                            label: 'Page Views',
                             data: dataset1,
                             backgroundColor: 'rgba(255, 159, 64, 0.2)',
                             borderColor: 'rgba(255, 159, 64, 1)',
@@ -485,14 +537,14 @@
                 },
             });
         </script> 
-    <!--Graph-6-->
-    <div class="row">
+<!--Graph-6-->
+<div class="row">
         <!-- BEGIN col-8 -->
         <div class="col-xl-12">
             <!-- BEGIN panel -->
             <div class="panel panel-inverse" data-sortable-id="index-1">
                 <div class="panel-heading">
-                    <h4 class="panel-title">Google Analytics</h4>
+                    <h4 class="panel-title">Graph of Goal Completion Location Vs Goal Completion </h4>
                     <div class="panel-heading-btn">
                         <a href="javascript:;" class="btn btn-xs btn-icon btn-default" data-toggle="panel-expand"><i class="fa fa-expand"></i></a>
                         <a href="javascript:;" class="btn btn-xs btn-icon btn-success" data-toggle="panel-reload"><i class="fa fa-redo"></i></a>
@@ -522,7 +574,7 @@
                         labels: labels2,
                         datasets: [
                             {
-                                label: 'goal_completions',
+                                label: 'Goal Completions',
                                 data: dataset1,
                                 backgroundColor: 'rgba(75, 192, 192, 0.2)',
                                 borderColor: 'rgba(75, 192, 192, 1)',
@@ -575,8 +627,7 @@
         <script src="https://cdn.canvasjs.com/ga/canvasjs.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         <script>
-
-//  Graph-7
+            //  Graph-7
 
             // Static data for the chart
             var labels2 = [{% for data in data %}'{{ data.affinity_category_reach }}',{% endfor %}];
@@ -628,5 +679,240 @@
                     }
                 }
             });
+    </script>
+
+ <!--Pie chart-->         
+ <div class="col-xl-12">
+    <!-- BEGIN panel -->
+    <div class="panel panel-inverse" data-sortable-id="index-1">
+        <div class="panel-heading">
+            <h4 class="panel-title">Pie Chart of Devices And Device Page Sessions </h4>
+            <div class="panel-heading-btn">
+                <!-- Panel controls buttons here -->
+            </div>
+        </div>
+        <div class="panel-body pe-1">
+            <!-- Center the chart container -->
+            <div class="chart-container" style="position: relative; height: 400px; width: auto; margin: 0 auto; text-align: center;">
+                <canvas id="DonutChart"></canvas>
+            </div>
+        </div>
+    </div> 
+   </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+    // Static data for the donut chart
+    var deviceLabels = ['Tablet', 'Mobile', 'Desktop'];  // Only include these categories
+    var deviceUsers = [{% for data in data %}{{ data.device_users }},{% endfor %}];
+
+    // Define a color palette for the categories
+    var colorPalette = [
+        'rgba(255, 99, 132, 0.7)',
+        'rgba(54, 162, 235, 0.7)',
+        'rgba(255, 206, 86, 0.7)'
+    ];
+
+    // Create the donut chart
+    var donutCtx = document.getElementById('DonutChart').getContext('2d');
+    var donutChart = new Chart(donutCtx, {
+        type: 'doughnut',  // Use doughnut type for a donut chart
+        data: {
+            
+            labels: deviceLabels,
+            datasets: [{
+                data: deviceUsers,
+                backgroundColor: colorPalette,
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            cutout: '25%',  // Adjust the size of the hole (center cutout)
+            legend: {
+                display: true,
+                position: 'right'
+            }
+        }
+    });
+  </script> -->
+
+<!--Graph-8-->
+<div class="row">
+    <!-- BEGIN col-8 -->
+    <div class="col-xl-12">
+        <!-- BEGIN panel -->
+        <div class="panel panel-inverse" data-sortable-id="index-1">
+            <div class="panel-heading">
+                <h4 class="panel-title">Graph of Language Vs Users / New Users </h4>
+                <div class="panel-heading-btn">
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-default" data-toggle="panel-expand"><i class="fa fa-expand"></i></a>
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-success" data-toggle="panel-reload"><i class="fa fa-redo"></i></a>
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-warning" data-toggle="panel-collapse"><i class="fa fa-minus"></i></a>
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-danger" data-toggle="panel-remove"><i class="fa fa-times"></i></a>
+                </div>
+            </div>
+            <div class="panel-body pe-1">
+                <canvas id="Chart8" width="400" height="100"></canvas>
+            </div>
+        </div> 
+        <script src="https://cdn.canvasjs.com/ga/canvasjs.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script>
+
+       //  Graph-8
+
+            // Static data for the chart
+            var labels2 = [{% for data in data %}'{{ data.language }}',{% endfor %}];
+            var dataset1 = [{% for data in data %}{{ data.language_users }},{% endfor %}];
+            var dataset2 = [{% for data in data %}{{ data.language_new_users }},{% endfor %}];
+        
+            // Create the chart
+            var ctx2 = document.getElementById('Chart8').getContext('2d');
+            var myChart2 = new Chart(ctx2, {
+                type: 'bar',
+                data: {
+                    labels: labels2,
+                    datasets: [
+                        {
+                            label: 'Users ',
+                            data: dataset1,
+                            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                            borderColor: 'rgba(75, 192, 192, 1)',
+                            borderWidth: 3,
+                            
+                        },
+                        {   type: 'bar',
+                            label: 'New Users',
+                            data: dataset2,
+                            backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                            borderColor: 'rgba(255, 99, 132, 1)',
+                            borderWidth: 3,
+                            
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: [
+                            {
+                                type: 'linear',
+                                display: true,
+                                position: 'left',
+                                id: 'y-axis-1'
+                            },
+                            {
+                                type: 'linear',
+                                display: true,
+                                position: 'right',
+                                id: 'y-axis-2'
+                            }
+                        ]
+                    }
+                }
+            });
           </script>
+<!--Graph-9-->
+<div class="row">
+    <!-- BEGIN col-8 -->
+    <div class="col-xl-12">
+        <!-- BEGIN panel -->
+        <div class="panel panel-inverse" data-sortable-id="index-1">
+            <div class="panel-heading">
+                <h4 class="panel-title">Graph of Date Vs  Page Level View</h4>
+                <div class="panel-heading-btn">
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-default" data-toggle="panel-expand"><i class="fa fa-expand"></i></a>
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-success" data-toggle="panel-reload"><i class="fa fa-redo"></i></a>
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-warning" data-toggle="panel-collapse"><i class="fa fa-minus"></i></a>
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-danger" data-toggle="panel-remove"><i class="fa fa-times"></i></a>
+                </div>
+            </div>
+            <div class="panel-body pe-1">
+                <canvas id="Chart9" width="400" height="100"></canvas>
+            </div>
+        </div> 
+        <script src="https://cdn.canvasjs.com/ga/canvasjs.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script>
+
+        //  Graph-7
+
+            // Static data for the chart
+            var labels2 = [{% for data in data %}'{{ data.g_date }}',{% endfor %}];
+            var dataset1 = [{% for data in data %}{{ data.page_views }},{% endfor %}];
+           // var dataset2 = [{% for data in data %}{{ data.sessions_reach }},{% endfor %}];
+        
+            // Create the chart
+            var ctx2 = document.getElementById('Chart9').getContext('2d');
+            var myChart2 = new Chart(ctx2, {
+                type: 'bar',
+                data: {
+                    labels: labels2,
+                    datasets: [
+                        
+                        {   type: 'bar',
+                            label: 'Page View',
+                            data: dataset2,
+                            backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                            borderColor: 'rgba(255, 99, 132, 1)',
+                            borderWidth: 3,
+                            
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: [
+                            {
+                                type: 'linear',
+                                display: true,
+                                position: 'left',
+                                id: 'y-axis-1'
+                            },
+                            {
+                                type: 'linear',
+                                display: true,
+                                position: 'right',
+                                id: 'y-axis-2'
+                            }
+                        ]
+                    }
+                }
+            });
+
+            $(document).ready(function() {
+                const startDateInput = $("#start-date-input");
+                const endDateInput = $("#end-date-input");
+                const dateRangeBtn = $("#advance-daterange");
+                
+                dateRangeBtn.datepicker({
+                    autoclose: true,
+                    format: "yyyy-mm-dd",
+                    clearBtn: true,
+                    todayHighlight: true,
+                    startDate: "-30d", // Adjust this based on your requirements
+                    endDate: "0d",
+                    templates: {
+                        leftArrow: '<i class="fa fa-caret-left"></i>',
+                        rightArrow: '<i class="fa fa-caret-right"></i>'
+                    }
+                });
+            
+                dateRangeBtn.on("changeDate", function(e) {
+                    startDateInput.val(
+                        e.date.getFullYear() + "-" + (e.date.getMonth() + 1) + "-" + e.date.getDate()
+                    );
+                    endDateInput.val(
+                        e.date.getFullYear() + "-" + (e.date.getMonth() + 1) + "-" + e.date.getDate()
+                    );
+                });
+            });
+          </script>
+            
+    </div>
+    
+</div>
+
 {% endblock content %}

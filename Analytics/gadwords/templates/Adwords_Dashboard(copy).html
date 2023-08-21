@@ -4,29 +4,10 @@
 <div class="col-3">
     <form class="form-horizontal form-bordered">
          <div class="form-group row">
-
-
-            
-            {% comment %} <label class="form-label col-form-label col-lg-4">Default Date Ranges</label>  {% endcomment %}
-            <!-- <div class="col-lg-8">
-                <div class="input-group" id="default-daterange">
-                    {% comment %} <input type="text" name="default-daterange" class="form-control" value="" placeholder="click to select the date range"> {% endcomment %}
-                    {% comment %} <div class="input-group-text"><i class="fa fa-calendar"></i></div> {% endcomment %}
-                </div> 
-             </div>-->
-        </div> 
-       <!-- <div class="form-group row">
-            <label class="form-label col-form-label col-lg-4">Advance Date Ranges</label>
-            <div class="col-lg-8">
-                <div id="advance-daterange" class="btn btn-default d-flex text-start align-items-center">
-                    <span class="flex-1">Jan 24, 2012 - June 22, 2023</span>
-                    <i class="fa fa-caret-down"></i>
-                </div>
-            </div>
-        </div>-->
-    </form>
-</div>
-<div class="row">
+         </div> 
+       </form>
+    </div>
+    <div class="row">
     <!-- BEGIN col-3 -->
     <div class="col-xl-3 col-md-6">
         <div class="widget widget-stats bg-red">
@@ -84,83 +65,99 @@
         </div>
     </div>
     <!-- END col-3 -->
-
-    <!-- Custom Date -->
-    {% comment %} <div class="row">
-        <!-- BEGIN col-3 -->
-        <div class="col-xl-3 col-md-6">
-            <div class="widget widget-stats bg-red">
-                <div class="stats-icon"><i class="fa fa-desktop"></i></div>
-                <div class="stats-info">
-                    <h4>TOTAL CLICKS</h4>
-                    <p>31,922</p>	
-                </div>
-                <div class="stats-link">
-                    <a href="javascript:;">View Detail <i class="fa fa-arrow-alt-circle-right"></i></a>
-                </div>
-            </div>
-        </div>
-        
-        <!-- END col-3 -->
-        <!-- BEGIN col-3 -->
-        <div class="col-xl-3 col-md-6">
-            <div class="widget widget-stats bg-green">
-                <div class="stats-icon"><i class="fa fa-link"></i></div>
-                <div class="stats-info">
-                    <h4>BOUNCE RATE</h4>
-                    <p>80.44%</p>	
-                </div>
-                <div class="stats-link">
-                    <a href="javascript:;">View Detail <i class="fa fa-arrow-alt-circle-right"></i></a>
-                </div>
-            </div>
-        </div>
-        <!-- END col-3 -->
-        <!-- BEGIN col-3 -->
-        <div class="col-xl-3 col-md-6">
-            <div class="widget widget-stats bg-orange">
-                <div class="stats-icon"><i class="fa fa-users"></i></div>
-                <div class="stats-info">
-                    <h4>CONVERSIONS</h4>
-                    <p>1,291,922</p>	
-                </div>
-                <div class="stats-link">
-                    <a href="javascript:;">View Detail <i class="fa fa-arrow-alt-circle-right"></i></a>
-                </div>
-            </div>
-        </div>
-        <!-- END col-3 -->
-        <!-- BEGIN col-3 -->
-        <div class="col-xl-3 col-md-6">
-            <div class="widget widget-stats bg-blue">
-                <div class="stats-icon"><i class="fa fa-clock"></i></div>
-                <div class="stats-info">
-                    <h4>CPC</h4>
-                    <p>2.23</p>	
-                </div>
-                <div class="stats-link">
-                    <a href="javascript:;">View Detail <i class="fa fa-arrow-alt-circle-right"></i></a>
-                </div>
-            </div>
-        </div>
-        <!-- END col-3 -->
-    </div> {% endcomment %}
 <!-- Add this form to capture the date range -->
-<form method="get">
-    <div class="form-group row">
-        <label class="form-label col-form-label col-lg-4">Start Date</label>
-        <div class="col-lg-8">
-            <input type="date" name="start_date" class="form-control" required>
+<div class="filter">
+    <div class="row">
+        <div class="col-3" onload="selectDateRange('last_30_days')" style="display:inline;justify-content:space-between;">
+            <select id="date_range_options" class="form-control" onchange="selectDateRange(this.value)" s>
+                <option >Select Date</option>
+                <option value="today">Today</option>
+                <option value="last_day">Yesterday</option>
+                <option value="last_7_days">Last 7 Days</option>
+                <option value="last_30_days">Last 30 Days</option>
+                <option value="this_month">This Month</option>
+                <option value="previous_month">Last Month</option>  
+            </select>
         </div>
-    </div>
-    <div class="form-group row">
-        <label class="form-label col-form-label col-lg-4">End Date</label>
-        <div class="col-lg-8">
-            <input type="date" name="end_date" class="form-control" required>
+        <div class="col-3">
+            <input type="date" class="form-control" id="start_date">
         </div>
-    </div>
-    <button type="submit" class="btn btn-primary">Apply Date Range</button>
-</form>
+        <div class="col-3">
+            <input type="date" class="form-control"  id="end_date">
+        </div>
+        <div class="col-3">
+            <button onclick="applyDateRange()" style="padding-button:10px; width: 100%">Apply Date Range</button>
+        </div>
+            <script>
+    function applyDateRange() {
+        var startDate = document.getElementById("start_date").value;
+        var endDate = document.getElementById("end_date").value;
+
+       // Redirect to the Adwords_Dashboard function with start and end dates
+       window.location.href = "/Adwords_Dashboard/?start_date=" + startDate + "&end_date=" + endDate;
+    }
+    
+    function selectDateRange(option) {
+        var today = new Date();
+        var startDate = new Date();
+        var endDate = new Date();
+        
+        if (option === "last_day") {
+            startDate.setDate(today.getDate() - 1);
+        } else if (option === "last_30_days") {
+            startDate.setDate(today.getDate() - 30);
+        } else if (option === "previous_month") {
+            startDate.setMonth(today.getMonth() - 1);
+            startDate.setDate(1);
+            endDate.setDate(0);
+        } else if (option === "this_month") {
+            startDate.setDate(1);
+        }else if (option === "last_7_days") {
+            startDate.setDate(today.getDate() - 7);
+        }else if (option === "today") {
+            startDate.setDate(today.getDate());
+        }
+        document.getElementById("start_date").valueAsDate = startDate;
+        document.getElementById("end_date").valueAsDate = endDate;
+    }
+    </script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        
+        /* Style for the date range options select element */
+        #date_range_options {
+            font-size: 16px;
+            padding: 5px;
+            margin-bottom: 10px;
+        }
+        
+        /* Style for the date input fields */
+        input[type="date"] {
+            font-size: 16px;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        
+        /* Style for the apply button */
+        button {
+            font-size: 16px;
+            padding: 5px 20px;
+            background-color: lightgreen;
+            color: black;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        /* Change button color when hovered */
+        button:hover {
+            background-color: ;
+        }
+    </style>
+</div>
 
 <!--Graph 1 Started here-->
     <!-- END row -->
@@ -170,7 +167,7 @@
             <!-- BEGIN panel -->
             <div class="panel panel-inverse" data-sortable-id="index-1">
                 <div class="panel-heading">
-                    <h4 class="panel-title">Google Adwords</h4>
+                    <h4 class="panel-title">Graph of Date Vs Clicks / Cost</h4>
                     <div class="panel-heading-btn">
                         <a href="javascript:;" class="btn btn-xs btn-icon btn-default" data-toggle="panel-expand"><i class="fa fa-expand"></i></a>
                         <a href="javascript:;" class="btn btn-xs btn-icon btn-success" data-toggle="panel-reload"><i class="fa fa-redo"></i></a>
@@ -202,20 +199,20 @@
                         labels: labels2,
                         datasets: [
                             {
-                                label: 'clicks',
+                                label: 'Clicks',
                                 data: dataset1,
                                 backgroundColor: 'rgba(75, 192, 192, 0.2)',
                                 borderColor: 'rgba(75, 192, 192, 1)',
                                 borderWidth: 3,
-                                yAxisID: 'y-axis-1'
+                               
                             },
                             {   type: 'line',
-                                label: 'cost',
+                                label: 'Cost',
                                 data: dataset2,
                                 backgroundColor: 'rgba(255, 99, 132, 0.2)',
                                 borderColor: 'rgba(255, 99, 132, 1)',
                                 borderWidth: 3,
-                                yAxisID: 'y-axis-2'
+                                
                             }
                         ]
                     },
@@ -248,7 +245,7 @@
         <!-- BEGIN panel -->
         <div class="panel panel-inverse" data-sortable-id="index-1">
             <div class="panel-heading">
-                <h4 class="panel-title">Google Adwords </h4>
+                <h4 class="panel-title">Graph of Campaign Adgroup Name Vs Campaign Cost / Campaign Clicks </h4>
                 <div class="panel-heading-btn">
                     <a href="javascript:;" class="btn btn-xs btn-icon btn-default" data-toggle="panel-expand"><i class="fa fa-expand"></i></a>
                     <a href="javascript:;" class="btn btn-xs btn-icon btn-success" data-toggle="panel-reload"><i class="fa fa-redo"></i></a>
@@ -277,20 +274,20 @@
                     labels: labels2,
                     datasets: [
                         {
-                            label: 'campaign_cost(in US$)',
+                            label: ' Cost(in US$)',
                             data: dataset1,
                             backgroundColor: 'rgba(75, 192, 192, 0.2)',
                             borderColor: 'rgba(75, 192, 192, 1)',
                             borderWidth: 3,
-                            yAxisID: 'y-axis-1'
+                            
                         },
                         {   type: 'bar',
-                            label: 'campaign_clicks',
+                            label: ' clicks',
                             data: dataset2,
                             backgroundColor: 'rgba(255, 99, 132, 0.2)',
                             borderColor: 'rgba(255, 99, 132, 1)',
                             borderWidth: 3,
-                            yAxisID: 'y-axis-2'
+                            
                         }
                     ]
                 },
@@ -323,7 +320,7 @@
             <!-- BEGIN panel -->
             <div class="panel panel-inverse" data-sortable-id="index-1">
                 <div class="panel-heading">
-                    <h4 class="panel-title">Google Adwords </h4>
+                    <h4 class="panel-title">Graph of Search Word Vs Clicks / Impressions </h4>
                     <div class="panel-heading-btn">
                         <a href="javascript:;" class="btn btn-xs btn-icon btn-default" data-toggle="panel-expand"><i class="fa fa-expand"></i></a>
                         <a href="javascript:;" class="btn btn-xs btn-icon btn-success" data-toggle="panel-reload"><i class="fa fa-redo"></i></a>
@@ -352,20 +349,20 @@
                         labels: labels2,
                         datasets: [
                             {
-                                label: 'search_word_clicks',
+                                label: 'Clicks',
                                 data: dataset1,
                                 backgroundColor: 'rgba(75, 192, 192, 0.2)',
                                 borderColor: 'rgba(75, 192, 192, 1)',
                                 borderWidth: 3,
-                                yAxisID: 'y-axis-1'
+                                
                             },
                             {   type: 'line',
-                                label: 'search_word_impressions',
+                                label: 'Impressions',
                                 data: dataset2,
                                 backgroundColor: 'rgba(255, 99, 132, 0.2)',
                                 borderColor: 'rgba(255, 99, 132, 1)',
                                 borderWidth: 3,
-                                yAxisID: 'y-axis-2'
+                                
                             }
                         ]
                     },
@@ -399,7 +396,7 @@
                     <!-- BEGIN panel -->
                     <div class="panel panel-inverse" data-sortable-id="index-1">
                         <div class="panel-heading">
-                            <h4 class="panel-title">Google Adwords </h4>
+                            <h4 class="panel-title">Graph of Age Range Vs Impression </h4>
                             <div class="panel-heading-btn">
                                 <a href="javascript:;" class="btn btn-xs btn-icon btn-default" data-toggle="panel-expand"><i class="fa fa-expand"></i></a>
                                 <a href="javascript:;" class="btn btn-xs btn-icon btn-success" data-toggle="panel-reload"><i class="fa fa-redo"></i></a>
@@ -428,7 +425,7 @@
                                 labels: labels2,
                                 datasets: [
                                     {
-                                        label: 'Age Impressions',
+                                        label: ' Impressions',
                                         data: dataset1,
                                         backgroundColor: 'rgba(255, 99, 132, 0.2)',
                                         borderColor: 'rgba(255, 99, 132, 1)',
@@ -467,7 +464,7 @@
                     <!-- BEGIN panel -->
                     <div class="panel panel-inverse" data-sortable-id="index-1">
                         <div class="panel-heading">
-                            <h4 class="panel-title">Google Adwords </h4>
+                            <h4 class="panel-title">Graph of Per Hour Vs Impression</h4>
                             <div class="panel-heading-btn">
                                 <a href="javascript:;" class="btn btn-xs btn-icon btn-default" data-toggle="panel-expand"><i class="fa fa-expand"></i></a>
                                 <a href="javascript:;" class="btn btn-xs btn-icon btn-success" data-toggle="panel-reload"><i class="fa fa-redo"></i></a>
@@ -496,7 +493,7 @@
                                 labels: labels2,
                                 datasets: [
                                     {
-                                        label: 'Per Hour Impression',
+                                        label: 'Impression',
                                         data: dataset1,
                                         backgroundColor: 'rgba(255, 99, 132, 0.2)',
                                         borderColor: 'rgba(255, 99, 132, 1)',
@@ -529,13 +526,13 @@
                       </script> 
 
 <!-- Graph-6-->
-<div class="row">
+
     <!-- BEGIN col-8 -->
     <div class="col-xl-12">
         <!-- BEGIN panel -->
         <div class="panel panel-inverse" data-sortable-id="index-1">
             <div class="panel-heading">
-                <h4 class="panel-title">Google Adwords </h4>
+                <h4 class="panel-title">Graph of Week Days Vs Impression </h4>
                 <div class="panel-heading-btn">
                     <a href="javascript:;" class="btn btn-xs btn-icon btn-default" data-toggle="panel-expand"><i class="fa fa-expand"></i></a>
                     <a href="javascript:;" class="btn btn-xs btn-icon btn-success" data-toggle="panel-reload"><i class="fa fa-redo"></i></a>
@@ -596,13 +593,13 @@
             });
           </script>
     <!-- Graph-7-->
-    div class="row">
+    
     <!-- BEGIN col-8 -->
     <div class="col-xl-12">
         <!-- BEGIN panel -->
         <div class="panel panel-inverse" data-sortable-id="index-1">
             <div class="panel-heading">
-                <h4 class="panel-title">Google Adwords </h4>
+                <h4 class="panel-title">Graph of Date Vs Clicks </h4>
                 <div class="panel-heading-btn">
                     <a href="javascript:;" class="btn btn-xs btn-icon btn-default" data-toggle="panel-expand"><i class="fa fa-expand"></i></a>
                     <a href="javascript:;" class="btn btn-xs btn-icon btn-success" data-toggle="panel-reload"><i class="fa fa-redo"></i></a>
@@ -631,7 +628,7 @@
                     labels: labels2,
                     datasets: [
                         {
-                            label: 'Impression',
+                            label: 'Clicks',
                             data: dataset1,
                             backgroundColor: 'rgba(75, 192, 192, 0.2)',
                             borderColor: 'rgba(75, 192, 192, 1)',

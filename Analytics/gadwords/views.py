@@ -11,7 +11,7 @@ from django.contrib import messages
 from django.shortcuts import render
 from .models import AdwordData
 from io import TextIOWrapper
-from datetime import datetime
+from datetime import datetime, timedelta
 import matplotlib.pyplot as plt
 import plotly.graph_objects as go
 
@@ -212,41 +212,29 @@ def dashboard(request):
         # Handle the case when the 'id' parameter is not provided
         return render(request, 'error.html', {'message': 'ID parameter is missing'})
 
-
-# Graph1 code by satish 6July23
 # Code For date range selection
 
 def Adwords_Dashboard(request):
-    # print("yes")
-    # Retrieve the start_date and end_date from the form submission (if any)
     try:
-        start_g_date = request.GET.get('start_date')
-        print("yes1",start_g_date)
-        end_g_date = request.GET.get('end_date')       
-        print("yes2",end_g_date)
-        # start_g_date = datetime.fromisoformat(start_g_date)
-        # start_date_new = start_date.strftime("%a, %d %b %Y")  # Example: "Thu, 20 Mar 2023"
-        # print("yes3",start_date)
-        # end_date = datetime.fromisoformat(end_date)
-        # end_date_new = end_date.strftime("%a, %d %b %Y")
-        # print("yes4",end_date)
-        # Filter the data based on the selected date range
-        if start_g_date and end_g_date:
-            data = AdwordData.objects.filter(date__gte=start_g_date, date__lte=end_g_date)
-            # data = AdwordData.objects.filter(date__range=(start_date_new, end_date_new))
-            # [print(entry.date) for entry in data]
-            # [print(start_date == entry.date) for entry in data] 
-            # print(start_date) cd
-            #[print(type(entry.date)) for entry in data]  
+        start_date = request.GET.get('start_date')
+        end_date = request.GET.get('end_date')
+
+        if start_date and end_date:
+            start_date = datetime.fromisoformat(start_date)
+            end_date = datetime.fromisoformat(end_date)
         else:
-            # If no date range is selected, retrieve all data
-            data = AdwordData.objects.all()
-            [print(entry.date) for entry in data] 
-            print("satish")      
-           
+            # Calculate default date range for the current month
+            today = datetime.today()
+            start_date = today.replace(day=1)
+            end_date = (start_date.replace(month=start_date.month % 12 + 1) - timedelta(days=1)).replace(hour=23, minute=59, second=59)
+
+        # Filter the data based on the selected date range using the date field
+        data = AdwordData.objects.filter(date__gte=start_date, date__lte=end_date)
+
     except Exception as e:
         print(e)
         data = AdwordData.objects.all()
+
     context = {
         'data': data
     }
