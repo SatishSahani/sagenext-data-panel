@@ -5,7 +5,6 @@ from django.shortcuts import render
 from django.http import JsonResponse
 from django.core.paginator import Paginator
 import plotly.graph_objects as go
-# Create your views here.
 import csv
 from django.contrib import messages
 from .models import AnalyticData
@@ -22,7 +21,6 @@ def analytics_data(request):
         if 'myfile' not in request.FILES:
             messages.error(request, 'No file selected')
             return redirect('ad_page')
-
         csv_file = request.FILES['myfile']
 
         if not csv_file.name.endswith('.csv'):
@@ -185,10 +183,6 @@ def analytics_data(request):
             medium_pages_session = row[146]
             medium_avg_session_duration = row[147]
 
-
-
-            
-
             AnalyticData.objects.create(
             g_date=g_date,
             months=months,
@@ -338,12 +332,10 @@ def analytics_data(request):
             medium_bounce_rate=medium_bounce_rate,
             medium_pages_session=medium_pages_session,
             medium_avg_session_duration=medium_avg_session_duration
-
             )
 
         messages.success(request, 'Data uploaded successfully')
         return redirect('analytics_data')
-
     else:
         ad_data = AnalyticData.objects.all()
         rows_per_page = request.GET.get('rows', 10)  # Get the number of rows per page from the query parameter 'rows'
@@ -371,7 +363,6 @@ def delete_selected_rows(request):
 
 def Analytic_Dasboard(request):
     id = request.GET.get('id')  # Get the 'id' parameter from the request's query parameters
-
     if id:
         try:
             data = AnalyticData.objects.get(id=id)  # Retrieve the data from the database based on the 'id' parameter
@@ -407,7 +398,7 @@ def Analytic_Dasboard(request):
 
 
 
-#  Here class is defined for char.js
+#  Here is the class defined for char.js
 def Analytics_Dashboard(request):
     data = AnalyticData.objects.all()
     context = {
@@ -422,7 +413,9 @@ def Analytics_Dashboard(request):
 def Analytics_Dashboard(request):
     try:
         start_date = request.GET.get('start_date')
+        # print(start_date,"yes1")
         end_date = request.GET.get('end_date')
+        # print(end_date,"yes2")
 
         if start_date and end_date:
             start_date = datetime.fromisoformat(start_date)
@@ -430,7 +423,9 @@ def Analytics_Dashboard(request):
         else:
             # Calculate default date range for the current month
             today = datetime.today()
+            
             start_date = today.replace(day=1)
+         
             end_date = (start_date.replace(month=start_date.month % 12 + 1) - timedelta(days=1)).replace(hour=23, minute=59, second=59)
             
         # Filter the data based on the selected date range using the g_date field
@@ -443,6 +438,5 @@ def Analytics_Dashboard(request):
     context = {
         'data': data
     }
-
     return render(request, 'Analytics_Dashboard.html', context)
-# the code working properly when i select date it shows that data anmd by default it show current months data
+

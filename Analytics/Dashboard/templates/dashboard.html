@@ -3,7 +3,7 @@
 <html lang="en" >
 <head>
 	<meta charset="utf-8" />
-	<title>Sagenext-Datapanel | Dashboard</title>
+	<title>Sagenext-Datapanel | Homepage</title>
 	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
 	<meta content="" name="description" />
 	<meta content="" name="author" />
@@ -26,15 +26,12 @@
 	<link href="../static/plugins/select-picker/dist/picker.min.css" rel="stylesheet" />
 	<!-- ================== END page-css ================== -->
 </head>
-
 <body>
-	
 	<!-- BEGIN #loader -->
 	<div id="loader" class="app-loader">
 		<span class="spinner"></span>
 	</div>
 	<!-- END #loader -->
-
 	<!-- BEGIN #app -->
 	<div id="app" class="app app-header-fixed app-sidebar-fixed ">
 		<!-- BEGIN #header -->
@@ -51,16 +48,6 @@
 			<!-- END navbar-header -->
 			<!-- BEGIN header-nav -->
 			<div class="navbar-nav">
-				<div class="navbar-item navbar-form">
-					<form action="" method="POST" name="search">
-						<div class="form-group">
-							<input type="text" class="form-control" placeholder="Enter keyword" />
-							<button type="submit" class="btn btn-search"><i class="fa fa-search"></i></button>
-						</div>
-					</form>
-				</div>
-				
-				
 				<div class="navbar-item navbar-user dropdown">
 					<a href="#" class="navbar-link dropdown-toggle d-flex align-items-center" data-bs-toggle="dropdown">
 						 <img src="../static/img/user/sage.13.png" alt="" />  
@@ -70,35 +57,22 @@
 						</span>
 					</a>
 					<div class="dropdown-menu dropdown-menu-end me-1">
-						<a href="javascript:;" class="dropdown-item">Edit Profile</a>
-						<a href="javascript:;" class="dropdown-item d-flex align-items-center">
-							Inbox
-							<span class="badge bg-danger rounded-pill ms-auto pb-4px">2</span> 
-						</a>
-						{% comment %} <a href="javascript:;" class="dropdown-item">Calendar</a>
-						<a href="javascript:;" class="dropdown-item">Setting</a> {% endcomment %}
-						<div class="dropdown-divider"></div>
 						<a href="{% url 'logout' %}" class="dropdown-item">Log Out</a>
-						
 					</div>
 				</div>
 			</div>
 			<!-- END header-nav -->
 		</div>
-		
 		<!-- END #header -->
-	
 		<!-- BEGIN #sidebar -->
 		<div id="sidebar" class="app-sidebar">
 			<!-- BEGIN scrollbar -->
 			<div class="app-sidebar-content" data-scrollbar="true" data-height="100%">
 				<!-- BEGIN menu -->
 				<div class="menu">
-					
-					
-					<div class="menu-item has-sub active" style="color:White;font-size:18px">
+					<div class="has-sub active" style="color:White;font-size:18px;text-align:center;margin:10px">
 						<div class="menu-submenu menu-text">
-							<b>Dashboard</b>
+							<a href="/dashboard/"  style="color:White;font-size:18px;text-align:center;margin:10px;text-decoration:none"><b>Dashboard</b></a>
 						</div>
 					</div>
 					<div class="menu-item has-sub active">
@@ -110,283 +84,134 @@
 							<div class="menu-caret"></div>
 						</a>
 						<div class="menu-submenu ">
-							<div class="">
-
-								<div class="menu-submenu">
-									<div class="menu-item has-sub active">
-										<a href="{% url 'Bookings_data' %}" class="menu-link">
-											<div class="menu-text">Vender Data</div>
-											<div class="menu-caret"></div>
-										</a>
-										<a href="{% url 'Bookings_data' %}" class="menu-link">
-											<div class="menu-text">Home Based Data</div>
-											<div class="menu-caret"></div>
-										</a>
-
-										
-									</div>
-									
-								</div>
+							<div class="menu-item active">
+								<a href="{% url 'ad_page' %}" class="menu-link">
+									<div class="menu-text">Adword</div>
+								</a>
 							</div>
-							<div class="menu-item active"><a href="{% url 'ad_page' %}" class="menu-link"><div class="menu-text">Adword</div></a></div>
-							<div class="menu-item active"><a href="{% url 'analytics_data' %}" class="menu-link"><div class="menu-text">Analytics</div></a></div>
-							{% comment %} <div class="menu-item active"><a href="{% url 'meta_data' %}" class="menu-link"><div class="menu-text">Meta</div></a></div> {% endcomment %}
-							
-							<div class="">
-								
-								<div class="menu-submenu ">
-									<div class="">
-									
-									</div>
-								</div>
-								
-							</div>
-
-						</div>
-					</div>
-					
-					
-					<div class="menu-item has-sub">
-						
-							<div class="menu-item has-sub">
-								
-								<div class="menu-submenu">
-									<div class="menu-item">
-										<a href="table_manage.html" class="menu-link">
-											<div class="menu-text">Default</div>
-										</a>
-									</div>
-									<div class="menu-item">
-										<a href="table_manage_buttons.html" class="menu-link">
-											<div class="menu-text">Buttons</div>
-										</a>
-									</div>
-									<div class="menu-item">
-										<a href="table_manage_colreorder.html" class="menu-link">
-											<div class="menu-text">ColReorder</div>
-										</a>
-									</div>
-									<div class="menu-item">
-										<a href="table_manage_fixed_columns.html" class="menu-link">
-											<div class="menu-text">Fixed Column</div>
-										</a>
-									</div>
-									<div class="menu-item">
-										<a href="table_manage_fixed_header.html" class="menu-link">
-											<div class="menu-text">Fixed Header</div>
-										</a>
-									</div>
-									<div class="menu-item">
-										<a href="table_manage_keytable.html" class="menu-link">
-											<div class="menu-text">KeyTable</div>
-										</a>
-									</div>
-									<div class="menu-item">
-										<a href="table_manage_responsive.html" class="menu-link">
-											<div class="menu-text">Responsive</div>
-										</a>
-									</div>
-									<div class="menu-item">
-										<a href="table_manage_rowreorder.html" class="menu-link">
-											<div class="menu-text">RowReorder</div>
-										</a>
-									</div>
-									<div class="menu-item">
-										<a href="table_manage_scroller.html" class="menu-link">
-											<div class="menu-text">Scroller</div>
-										</a>
-									</div>
-									<div class="menu-item">
-										<a href="table_manage_select.html" class="menu-link">
-											<div class="menu-text">Select</div>
-										</a>
-									</div>
-									<div class="menu-item">
-										<a href="table_manage_combine.html" class="menu-link">
-											<div class="menu-text">Extension Combination</div>
-										</a>
-									</div>
-								</div>
+							<div class="menu-item active">
+								<a href="{% url 'analytics_data' %}" class="menu-link">
+									<div class="menu-text">Analytics</div>
+								</a>
 							</div>
 						</div>
 					</div>
-			
-						<div class="menu-submenu">
-							<div class="menu-item">
-								
-							</div>
-							<div class="menu-item">
-							
-							</div>
-							<div class="menu-item">
-							
-							</div>
-							<div class="menu-item">
-						
-							</div>
-							<div class="menu-item">
-							
-							</div>
-						</div>
-					</div>
-					<div class="menu-item has-sub">
-					
-					<!-- BEGIN minify-button -->
-					<div class="menu-item d-flex">
-						<a href="javascript:;" class="app-sidebar-minify-btn ms-auto" data-toggle="app-sidebar-minify"><i class="fa fa-angle-double-left"></i></a>
-					</div>
-					<!-- END minify-button -->
 				</div>
 				<!-- END menu -->
 			</div>
 			<!-- END scrollbar -->
 		</div>
-		<div class="app-sidebar-bg"></div>
-		<div class="app-sidebar-mobile-backdrop"><a href="#" data-dismiss="app-sidebar-mobile" class="stretched-link"></a></div>
 		<!-- END #sidebar -->
 		
 		<!-- BEGIN #content -->
 		<div id="content" class="app-content">
-			
 			{% block content %}
-			
-			<!-- END panel -->
 			<!-- BEGIN row -->
-			<!-- Custom Date -->
-			<div class="col-3">
-			<form class="form-horizontal form-bordered">
-				 <div class="form-group row">
-					{% comment %} <label class="form-label col-form-label col-lg-4">Default Date Ranges</label>  {% endcomment %}
-					 <div class="col-lg-8">
-						<div class="input-group" id="default-daterange">
-							{% comment %} <input type="text" name="default-daterange" class="form-control" value="" placeholder="click to select the date range"> {% endcomment %}
-							{% comment %} <div class="input-group-text"><i class="fa fa-calendar"></i></div> {% endcomment %}
-						</div> 
-					 </div>
-				</div> 
-				
-				
-				  
-				<div class="form-group row">
-				<!--	<label class="form-label col-form-label col-lg-4">Advance Date Ranges</label>
-					<div class="col-lg-8">
-						<div id="advance-daterange" class="btn btn-default d-flex text-start align-items-center">
-							<span class="flex-1">Jan 24, 2012 - June 22, 2023</span>
-							<i class="fa fa-caret-down"></i>
-						</div>
-					</div>>--
-					<!-Drop-Down-->
-		<div class="btn-group">&nbsp;
-			<a href="#" class="btn btn-dark">Click Here for Graph</a>
-			   <a href="#" class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown">
-			   <i class="fa fa-caret-down"></i>
-				   </a>
-					<ul class="dropdown-menu dropdown-menu-end">
-					{% comment %} <li><a href="{% url 'AdDashboard' %}" class="btn btn-search">Adword</a></li>
-					<li><a href="{% url 'Analytics_Dashboard' %}" class="btn btn-search">Analytics</a></i></li>
-					<li><a href="{% url 'ABD' %}" class="btn btn-search">Artist Bookings</a></i></li> {% endcomment %}
-				   {% comment %} <li><a href="#" class="btn btn-search">Meta</a><i class="fa fa-caret-down"></i></li> {% endcomment %}
-					   <li><a href="{% url 'Adwords_Dashboard' %}" class="btn btn-search">Google Adwords</a></i></li>
-					   <li><a href="{% url 'Analytics_Dashboard' %}" class="btn btn-search">Google Analytics</a></i></li>
-					   {% comment %} <li><a href="{% url 'VLD' %}" class="btn btn-search">Vendor Location</a></i></li> {% endcomment %}
-					   
-					</ul>
-				   </div>
-				</div>
-			</form>
+			<div class="btn-group">&nbsp;
+				<a href="#" class="btn btn-dark">Click Here for Graph</a>
+				<a href="#" class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown">
+					<i class="fa fa-caret-down"></i>
+				</a>
+				<ul class="dropdown-menu dropdown-menu-end">
+					<li><a href="{% url 'Adwords_Dashboard' %}" class="btn btn-search">Google Adwords</a></li>
+					<li><a href="{% url 'Analytics_Dashboard' %}" class="btn btn-search">Google Analytics</a></li>
+				</ul>
+			</div>
 		</div>
-<!-- Custom Date -->
-			<div class="row">
-				<!-- BEGIN col-3 -->
-				<div class="col-xl-3 col-md-6">
-					<div class="widget widget-stats bg-red">
-						<div class="stats-icon"><i class="fa fa-desktop"></i></div>
-						<div class="stats-info">
-							<h4>TOTAL CLICKS</h4>
-							<p>31,922</p>	
-						</div>
-						<div class="stats-link">
-							<a href="javascript:;">View Detail <i class="fa fa-arrow-alt-circle-right"></i></a>
-						</div>
+		<div class="row" style="margin-left:235px;padding:0">
+			<!-- BEGIN col-3 -->
+			<div class="col-xl-3 col-md-6">
+				<div class="widget widget-stats bg-red">
+					<div class="stats-icon"><i class="fa fa-hand-pointer-o"></i></div>
+					<div class="stats-info">
+						<h4>TOTAL CLICKS</h4>
+						<p>31,922</p>	
+					</div>
+					<div class="stats-link">
+						<a href="javascript:;">View Detail <i class="fa fa-arrow-alt-circle-right"></i></a>
 					</div>
 				</div>
-				
-				<!-- END col-3 -->
-				<!-- BEGIN col-3 -->
-				<div class="col-xl-3 col-md-6">
-					<div class="widget widget-stats bg-green">
-						<div class="stats-icon"><i class="fa fa-link"></i></div>
-						<div class="stats-info">
-							<h4>BOUNCE RATE</h4>
-							<p>80.44%</p>	
-						</div>
-						<div class="stats-link">
-							<a href="javascript:;">View Detail <i class="fa fa-arrow-alt-circle-right"></i></a>
-						</div>
-					</div>
-				</div>
-				<!-- END col-3 -->
-				<!-- BEGIN col-3 -->
-				<div class="col-xl-3 col-md-6">
-					<div class="widget widget-stats bg-pink">
-						<div class="stats-icon"><i class="fa fa-users"></i></div>
-						<div class="stats-info">
-							<h4>Sessions</h4>
-							<p>17,137</p>	
-						</div>
-						<div class="stats-link">
-							<a href="javascript:;">View Detail <i class="fa fa-arrow-alt-circle-right"></i></a>
-						</div>
-					</div>
-				</div>
-				<!-- END col-3 -->
-				
-				<!-- BEGIN col-3 -->
-				<div class="col-xl-3 col-md-6">
-					<div class="widget widget-stats bg-orange">
-						<div class="stats-icon"><i class="fa fa-clock"></i></div>
-						<div class="stats-info">
-							<h4>Users</h4>
-							<p>14,905</p>	
-						</div>
-						<div class="stats-link">
-							<a href="javascript:;">View Detail <i class="fa fa-arrow-alt-circle-right"></i></a>
-						</div>
-					</div>
-				</div>
-				<!-- END col-3 -->
 			</div>
-			<!-- END row -->
-
 			
-
-			<!-- BEGIN row -->
-			<div class="row">
-				<!-- BEGIN col-8 -->
-				<div class="col-xl-8">
-					<!-- BEGIN panel -->
-					<div class="panel panel-inverse" data-sortable-id="index-1">
-						
-					<!-- END panel -->
-					
-					<!-- BEGIN tabs -->
-								</div>
-								{% comment %} <hr class="bg-gray-500" /> {% endcomment %}
-								<div class="d-sm-flex">
-									<a href="javascript:;" class="w-sm-200px">
-								 </a>
-									
-								</div>
-							
+			<!-- END col-3 -->
+			<!-- BEGIN col-3 -->
+			<div class="col-xl-3 col-md-6">
+				<div class="widget widget-stats bg-green">
+					<div class="stats-icon"><i class="fa fa-link"></i></div>
+					<div class="stats-info">
+						<h4>BOUNCE RATE</h4>
+						<p>80.44%</p>	
+					</div>
+					<div class="stats-link">
+						<a href="javascript:;">View Detail <i class="fa fa-arrow-alt-circle-right"></i></a>
+					</div>
 				</div>
-				<!-- END col-4 -->
 			</div>
-			<!-- END row -->
-		</div> 
-		<!-- END #content -->
-	
-		
-		{% endblock content %}
+			<!-- END col-3 -->
+			<!-- BEGIN col-3 -->
+			<div class="col-xl-3 col-md-6">
+				<div class="widget widget-stats bg-pink">
+					<div class="stats-icon"><i class="fa fa-users"></i></div>
+					<div class="stats-info">
+						<h4>Sessions</h4>
+						<p>17,137</p>	
+					</div>
+					<div class="stats-link">
+						<a href="javascript:;">View Detail <i class="fa fa-arrow-alt-circle-right"></i></a>
+					</div>
+				</div>
+			</div>
+			<!-- END col-3 -->
+			
+			<!-- BEGIN col-3 -->
+			<div class="col-xl-3 col-md-6">
+				<div class="widget widget-stats bg-orange">
+					<div class="stats-icon"><i class="fa fa-clock"></i></div>
+					<div class="stats-info">
+						<h4>Users</h4>
+						<p>14,905</p>	
+					</div>
+					<div class="stats-link">
+						<a href="javascript:;">View Detail <i class="fa fa-arrow-alt-circle-right"></i></a>
+					</div>
+				</div>
+			</div>
+			<!-- END col-3 -->
+		</div>
+		<div class="row" style="margin-left:240px;padding:0;padding-right:10px">
+			<p class="btn btn-dark"style="cursor:none">Click Here for Graph</p>
+			<ul class="dropdown-menu dropdown-menu-end">
+				<li><a href="{% url 'Adwords_Dashboard' %}" class="btn btn-search">Google Adwords</a></li>
+				<li><a href="{% url 'Analytics_Dashboard' %}" class="btn btn-search">Google Analytics</a>/li>
+			</ul>
+		</div>
+		<div class="row" style="margin-left:240px;justify-content:space-around">
+			<div class="col-xl-4 col-md-2">
+				<div class="widget widget-stats" style="background-color:lightgreen;color:black">
+					<div class="stats-icon"><i class="fa fa-desktop"></i></div>
+					<div class="stats-info" >
+						<h4 style="color:black">Google Adwords</h4>
+					</div>
+					<div class="stats-link" style="padding-top:15px">
+						<a href="{% url 'Adwords_Dashboard' %}" style="color:black">Adwords Dashboard<i class="fa fa-arrow-alt-circle-right"></i></a>
+					</div>
+				</div>
+			</div>
+			<div class="col-xl-4 col-md-2">
+				<div class="widget widget-stats" style="background-color:lightgreen;color:black">
+					<div class="stats-icon"><i class="fa fa-desktop"></i></div>
+					<div class="stats-info">
+						<h4 style="color:black">Google Analytics</h4>
+					</div>
+					<div class="stats-link" style="padding-top:15px">
+						<a href="{% url 'Analytics_Dashboard' %}" style="color:black">Analytics Dashboard<i class="fa fa-arrow-alt-circle-right"></i></a>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- BEGIN row -->
+	</div>
+	{% endblock content %}
 		
 	
 

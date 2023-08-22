@@ -11,7 +11,7 @@
             {% csrf_token %}
             <input type="file" name="myfile">
             <input type="submit" value="Upload">
-            <a href="/dashboard/" class="btn btn-primary" style="margin-right:4px">Back to Dashboard</a>
+            <a href="/dashboard/" class="btn btn-primary" style="margin-right:4px" >Back to Dashboard</a>
           </form>
     </div>
     <h1 class="page-header"> <small></small></h1>
@@ -23,7 +23,7 @@
                     <div class="panel-heading-btn">
                         
                         {% csrf_token %}
-                        <a href="{% url 'Analytics_Dashboard' %}" class="btn btn-secondry" target="_blank">Generate Graph</a>
+                        <a href="{% url 'Analytics_Dashboard' %}" class="btn btn-secondry" target="_blank">Analytics Dashboard</a>
                         <button id="delete-button" class="btn btn-danger btn-sm" style="margin-right:4px">Delete Selected</button>
                         {% comment %} <button id="view-graph-button" class="btn btn-danger btn-sm" disabled>View Graph</button> {% endcomment %}
                     </div>
@@ -67,7 +67,8 @@
                     <th>Page</th>
                     <th>Page Per Views</th>
                     <th>Page Bounce Rate</th>
-                    <th>Page Exit Event Category</th>
+                    <th>Page Exit</th>
+                    <th> Event Category</th>
                     <th>Event Total Events</th>
                     <th>Event Unique Events</th>
                     <th>Page Event</th>
@@ -251,7 +252,7 @@
                                 <td>{{ row.url_sessions }}</td>
                                 <td>{{ row.url_bounce_rate }}</td>
                                 <td>{{ row.url_page_session }}</td>
-                                <td>{{ row.per_hour_ }}</td>
+                                <td>{{ row.per_hour }}</td>
                                 <td>{{ row.per_hour_users }}</td>
                                 <td>{{ row.per_hour_new_users }}</td>
                                 <td>{{ row.per_hour_sessions }}</td>
@@ -414,7 +415,7 @@
                                 <td>{{ row.url_sessions }}</td>
                                 <td>{{ row.url_bounce_rate }}</td>
                                 <td>{{ row.url_page_session }}</td>
-                                <td>{{ row.per_hour_ }}</td>
+                                <td>{{ row.per_hour }}</td>
                                 <td>{{ row.per_hour_users }}</td>
                                 <td>{{ row.per_hour_new_users }}</td>
                                 <td>{{ row.per_hour_sessions }}</td>
@@ -526,6 +527,7 @@
                         <option value="5" {% if rows_per_page == 5 %}selected{% endif %}>5</option>
                         <option value="10" {% if rows_per_page == 10 %}selected{% endif %}>10</option>
                         <option value="20" {% if rows_per_page == 20 %}selected{% endif %}>20</option>
+                        <option value="50" {% if rows_per_page == 50 %}selected{% endif %}>50</option>
                         <option value="All" {% if rows_per_page == "All" %}selected{% endif %}>All</option>
                         <!-- Add more options as needed -->
                       </select>
@@ -602,6 +604,25 @@
             // Redirect to the dashboard page with the selected row's data
             var selectedRowId = $('input[name="selected-rows"]:checked').val();
             window.location.href = '/dashboard/?id=' + selectedRowId;
+          });
+        });
+        $(document).ready(function() {
+          // Function to check if any checkbox is selected and enable/disable the button accordingly
+          function checkSelected() {
+            var selectedRows = $('input[name="selected-rows"]:checked');
+            if (selectedRows.length > 0) {
+              $('#delete-button').prop('disabled', false);
+            } else {
+              $('#delete-button').prop('disabled', true);
+            }
+          }
+      
+          // Call the checkSelected function when the page loads
+          checkSelected();
+      
+          // Call the checkSelected function whenever there's a change in the checkboxes
+          $('input[name="selected-rows"]').change(function() {
+            checkSelected();
           });
         });
         </script>
