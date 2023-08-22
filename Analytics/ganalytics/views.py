@@ -5,7 +5,6 @@ from django.shortcuts import render
 from django.http import JsonResponse
 from django.core.paginator import Paginator
 import plotly.graph_objects as go
-# Create your views here.
 import csv
 from django.contrib import messages
 from .models import AnalyticData
@@ -22,7 +21,6 @@ def analytics_data(request):
         if 'myfile' not in request.FILES:
             messages.error(request, 'No file selected')
             return redirect('ad_page')
-
         csv_file = request.FILES['myfile']
 
         if not csv_file.name.endswith('.csv'):
@@ -185,10 +183,6 @@ def analytics_data(request):
             medium_pages_session = row[146]
             medium_avg_session_duration = row[147]
 
-
-
-            
-
             AnalyticData.objects.create(
             g_date=g_date,
             months=months,
@@ -338,12 +332,10 @@ def analytics_data(request):
             medium_bounce_rate=medium_bounce_rate,
             medium_pages_session=medium_pages_session,
             medium_avg_session_duration=medium_avg_session_duration
-
             )
 
         messages.success(request, 'Data uploaded successfully')
         return redirect('analytics_data')
-
     else:
         ad_data = AnalyticData.objects.all()
         rows_per_page = request.GET.get('rows', 10)  # Get the number of rows per page from the query parameter 'rows'
@@ -371,7 +363,6 @@ def delete_selected_rows(request):
 
 def Analytic_Dasboard(request):
     id = request.GET.get('id')  # Get the 'id' parameter from the request's query parameters
-
     if id:
         try:
             data = AnalyticData.objects.get(id=id)  # Retrieve the data from the database based on the 'id' parameter
@@ -432,11 +423,11 @@ def Analytics_Dashboard(request):
         else:
             # Calculate default date range for the current month
             today = datetime.today()
-            # print("todays is not working")
+            
             start_date = today.replace(day=1)
-            # print("start_date is not woking")
+         
             end_date = (start_date.replace(month=start_date.month % 12 + 1) - timedelta(days=1)).replace(hour=23, minute=59, second=59)
-            # print("end_date is also not working")
+            
         # Filter the data based on the selected date range using the g_date field
         data = AnalyticData.objects.filter(g_date__gte=start_date, g_date__lte=end_date)
 
@@ -447,103 +438,5 @@ def Analytics_Dashboard(request):
     context = {
         'data': data
     }
-
-
     return render(request, 'Analytics_Dashboard.html', context)
-# the above code working properly when i select date it shows data and also bydefault it show current months data
 
-
-# for advance date range
-
-# def Analytics_Dashboard(request):
-#     try:
-#         start_date = request.GET.get('start_date')
-#         end_date = request.GET.get('end_date')
-
-#         if start_date and end_date:
-#             start_date = datetime.strptime(start_date, '%Y-%m-%d')
-#             end_date = datetime.strptime(end_date, '%Y-%m-%d')
-#         else:
-#             range_option = request.GET.get('advance-daterange')
-#             if range_option:
-#                 today = datetime.today()
-#                 if range_option == 'Today':
-#                     start_date = today
-#                     end_date = today
-#                 elif range_option == 'Yesterday':
-#                     start_date = today - timedelta(days=1)
-#                     end_date = today - timedelta(days=1)
-#                 elif range_option == 'Last 7 Days':
-#                     start_date = today - timedelta(days=6)
-#                     end_date = today
-#                 elif range_option == 'Last 30 Days':
-#                     start_date = today - timedelta(days=29)
-#                     end_date = today
-#                 elif range_option == 'This Month':
-#                     start_date = today.replace(day=1)
-#                     end_date = today.replace(month=today.month % 12 + 1) - timedelta(days=1)
-#                 elif range_option == 'Last Month':
-#                     last_month = today.replace(day=1) - timedelta(days=1)
-#                     start_date = last_month.replace(day=1)
-#                     end_date = last_month
-#                 # Handle other predefined ranges if needed
-
-#         data = AnalyticData.objects.filter(g_date__gte=start_date, g_date__lte=end_date)
-
-#     except Exception as e:
-#         print(e)
-#         data = AnalyticData.objects.all()
-
-#     context = {
-#         'data': data
-#     }
-
-#     return render(request, 'Analytics_Dashboard.html', context)
-
-# The below code is for fetching CLICKS, BOUNCE RATE, CONVERSIONS and USERS from database but not working properly
-# from django.db.models import Sum, Avg
-# def Analytics_Dashboard(request):
-#     try:
-#         # Get the selected date range
-#         start_date = request.GET.get('start_date')
-#         end_date = request.GET.get('end_date')
-
-#         # Calculate the date range for the current month
-#          # Calculate default date range for the current month
-#         today = datetime.today()
-#         start_date = today.replace(day=1)
-#         end_date = (start_date.replace(month=start_date.month % 12 + 1) - timedelta(days=1)).replace(hour=23, minute=59, second=59)
-#         # today = datetime.today()
-#         # current_month_start = today.replace(day=1)
-#         # current_month_end = (current_month_start.replace(month=current_month_start.month % 12 + 1) - timedelta(days=1)).replace(hour=23, minute=59, second=59)
-
-#         # Determine the date range based on user input or current month
-#         if start_date and end_date:
-#             start_date = datetime.strptime(start_date, '%Y-%m-%d')
-#             end_date = datetime.strptime(end_date, '%Y-%m-%d')
-#         else:
-#             start_date = start_date
-#             end_date = end_date
-
-#         # Fetch and calculate the required data from the database
-#         data = AnalyticData.objects.filter(g_date__gte=start_date, g_date__lte=end_date)
-#         total_clicks = data.aggregate(campaign_clicks=Sum('clicks'))['campaign_clicks']
-#         total_bounce_rate = data.aggregate(country_bounce_rate=Avg('bounce_rate'))['total_bounce_rate']
-#         total_conversions = data.aggregate(total_conversions=Sum('conversions'))['total_conversions']
-#         total_users = data.aggregate(total_users=Sum('users'))['total_users']
-
-#     except Exception as e:
-#         print(e)
-#         total_clicks = 0
-#         total_bounce_rate = 0
-#         total_conversions = 0
-#         total_users = 0
-
-#     context = {
-#         'total_clicks': total_clicks,
-#         'total_bounce_rate': total_bounce_rate,
-#         'total_conversions': total_conversions,
-#         'total_users': total_users,
-#     }
-
-#     return render(request, 'Analytics_Dashboard.html', context)

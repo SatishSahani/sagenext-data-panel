@@ -682,7 +682,7 @@
     </script>
 
  <!--Pie chart-->         
- <div class="col-xl-12">
+<div class="col-xl-12">
     <!-- BEGIN panel -->
     <div class="panel panel-inverse" data-sortable-id="index-1">
         <div class="panel-heading">
@@ -698,13 +698,17 @@
             </div>
         </div>
     </div> 
-   </div>
+</div>
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
     // Static data for the donut chart
-    var deviceLabels = ['Tablet', 'Mobile', 'Desktop'];  // Only include these categories
-    var deviceUsers = [{% for data in data %}{{ data.device_users }},{% endfor %}];
+    var deviceLabels = ['Tablet', 'Mobile', 'Desktop'];
+    var deviceUsers = [
+        {% for data in data %}
+            {{ data.device_users }},
+        {% endfor %}
+    ];
 
     // Define a color palette for the categories
     var colorPalette = [
@@ -716,9 +720,8 @@
     // Create the donut chart
     var donutCtx = document.getElementById('DonutChart').getContext('2d');
     var donutChart = new Chart(donutCtx, {
-        type: 'doughnut',  // Use doughnut type for a donut chart
+        type: 'doughnut',
         data: {
-            
             labels: deviceLabels,
             datasets: [{
                 data: deviceUsers,
@@ -728,14 +731,15 @@
         },
         options: {
             responsive: true,
-            cutout: '25%',  // Adjust the size of the hole (center cutout)
+            cutout: '25%',
             legend: {
                 display: true,
                 position: 'right'
             }
         }
     });
-  </script> -->
+</script>
+
 
 <!--Graph-8-->
 <div class="row">

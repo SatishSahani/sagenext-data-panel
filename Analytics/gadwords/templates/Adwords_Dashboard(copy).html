@@ -21,7 +21,6 @@
             </div>
         </div>
     </div>
-    
     <!-- END col-3 -->
     <!-- BEGIN col-3 -->
     <div class="col-xl-3 col-md-6">
@@ -547,12 +546,9 @@
         <script src="https://cdn.canvasjs.com/ga/canvasjs.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         <script>
- 
             // Static data for the chart
             var labels2 = [{% for data in data %}'{{ data.per_day }}',{% endfor %}];
             var dataset1 = [{% for data in data %}{{ data.per_day_impression }},{% endfor %}];
-            //var dataset2 = [{% for data in data %}{{ data. }},{% endfor %}];
-        
             // Create the chart
             var ctx2 = document.getElementById('Chart6').getContext('2d');
             var myChart2 = new Chart(ctx2, {
@@ -593,7 +589,6 @@
             });
           </script>
     <!-- Graph-7-->
-    
     <!-- BEGIN col-8 -->
     <div class="col-xl-12">
         <!-- BEGIN panel -->
@@ -632,8 +627,7 @@
                             data: dataset1,
                             backgroundColor: 'rgba(75, 192, 192, 0.2)',
                             borderColor: 'rgba(75, 192, 192, 1)',
-                            borderWidth: 4,
-                            
+                            borderWidth: 4,                            
                         },
                     
                     ]
@@ -659,6 +653,4 @@
                 }
             });
           </script>               
- <!-- changes in code here 20july-->  
-
  {% endblock content %}
