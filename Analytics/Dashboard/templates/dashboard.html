@@ -108,14 +108,6 @@
 			{% block content %}
 			<!-- BEGIN row -->
 			<div class="btn-group">&nbsp;
-				<a href="#" class="btn btn-dark">Click Here for Graph</a>
-				<a href="#" class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown">
-					<i class="fa fa-caret-down"></i>
-				</a>
-				<ul class="dropdown-menu dropdown-menu-end">
-					<li><a href="{% url 'Adwords_Dashboard' %}" class="btn btn-search">Google Adwords</a></li>
-					<li><a href="{% url 'Analytics_Dashboard' %}" class="btn btn-search">Google Analytics</a></li>
-				</ul>
 			</div>
 		</div>
 		<div class="row" style="margin-left:235px;padding:0">
@@ -212,18 +204,12 @@
 		<!-- BEGIN row -->
 	</div>
 	{% endblock content %}
-		
-	
-
 	<!-- END #app -->
-	
 	<script src="../static/js/vendor.min.js"></script>
 	<script src="../static/js/app.min.js"></script>
 	<!-- ================== END core-js ================== -->
 	
 	<!-- ================== BEGIN page-js ================== -->
-	
-
 	<script src="../static/plugins/moment/min/moment.min.js"></script>
 	<script src="../static/plugins/bootstrap-daterangepicker/daterangepicker.js"></script>
 	<script src="../static/plugins/select2/dist/js/select2.min.js"></script>
